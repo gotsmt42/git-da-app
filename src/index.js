@@ -1,13 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import "./index.css";
+
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import "./assets/scss/style.scss";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter as Router } from "react-router-dom";
+import Loader from "./layouts/loader/Loader";
+
+import { AuthProvider } from "./auth/AuthContext";
+
+import { StyleSheetManager } from "styled-components";
+
+import "bootstrap/dist/css/bootstrap.min.css"; // import Bootstrap CSS
+
+import "@fortawesome/react-fontawesome"
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+
+
 root.render(
+  
   <React.StrictMode>
-    <App />
+    
+    <Suspense fallback={<Loader />}>
+      <Router>
+        <AuthProvider>
+          <StyleSheetManager shouldForwardProp={(prop) => prop !== "align"}>
+            <App />
+          </StyleSheetManager>
+        </AuthProvider>
+      </Router>
+    </Suspense>
   </React.StrictMode>
 );
 
