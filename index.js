@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const authRouter = require('./routes/auth');
 const productRouter = require('./routes/product');
 const fileRouter = require('./routes/file');
+const calendarEventRouter = require('./routes/calendarEvent');
 
 const app = express();
 const PORT = process.env.APP_PORT;
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', authRouter);
 app.use('/api/product', productRouter);
 app.use('/api/files', fileRouter);
+app.use('/api/events', calendarEventRouter);
 app.use('/api/asset/uploads/images', express.static(__dirname + '/asset/uploads/images'));
 app.use('/api/asset/uploads/files', express.static(__dirname + '/asset/uploads/files'));
 

@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   email: String,
-  fname: String,
-  lname: String,
+  fname: {type: String, default: ""},
+  lname: {type: String, default: ""},
   tel: String,
-  imageUrl: { type: String, default: "asset/image/profile-1.jpg" }, // ให้เก็บ URL ของภาพ
+  imageUrl: { type: String, default: "asset/image/userDefault-1.jpg" }, // ให้เก็บ URL ของภาพ
 
   rank: { type: String, default: 'employee' },
   role: { type: String, default: 'user' },

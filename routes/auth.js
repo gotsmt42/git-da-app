@@ -13,7 +13,6 @@ const upload = multer({ dest: "asset/uploads/images/" });
 
 const checkFile = require("../middleware/checkFile");
 
-
 router.get("/user", verifyToken, async (req, res) => {
   try {
     const userId = req.userId;
@@ -21,9 +20,13 @@ router.get("/user", verifyToken, async (req, res) => {
 
     const user = await User.findOne({ _id: userId }).exec();
 
-    // const users = await User.findOne({_id: userId}).exec();
-    res.json({ user: user, token: token });
-
+    if (user) {
+      res.json({ user: user, token: token });
+    } else {
+      res.json({
+        err: "Username หรือ Password ไม่ถูกต้องกรุณาลองใหม่อีกครั้ง",
+      });
+    }
     // console.log(user);
   } catch (err) {
     res.status(500).send(err.message);
@@ -53,7 +56,7 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).send("Invalid username or password");
+      return res.status(401).json({ err: "Invalid username or password" });
     }
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
@@ -72,7 +75,9 @@ router.post("/login", async (req, res) => {
       //   exp: Math.floor(Date.now() / 1000) + 60 * 60, // Unix timestamp in seconds
     };
 
-    const token = jwt.sign(payload, process.env.APP_SECRET, { expiresIn: "7 days" });
+    const token = jwt.sign(payload, process.env.APP_SECRET, {
+      expiresIn: "7 days",
+    });
     res.status(200).json({ token, payload });
 
     // console.log(req.body);
@@ -121,7 +126,7 @@ router.put(
 router.get("/logout", (req, res) => {
   // ทำการลบหรือเคลียร์ Token หลังจากตรวจสอบแล้วว่าถูกต้อง
 
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
 
   // โดยใน req.user จะมีข้อมูลของผู้ใช้จาก Token ที่ถูก verify แล้ว
   // ดำเนินการตรวจสอบหรือยกเลิกการใช้งาน Token จากฝั่ง server-side ตามที่ต้องการ

@@ -68,7 +68,7 @@ router.post("/", verifyToken, async (req, res) => {
         uploadedFiles.push(savedFile);
       }
       // ส่งข้อความผ่าน Line Notify เมื่อมีการอัปโหลดไฟล์เสร็จสิ้น
-      LineNotify(uploadedFiles);
+      LineNotify(uploadedFiles, userId);
 
       res.status(201).json({
         message: "Files uploaded successfully",
