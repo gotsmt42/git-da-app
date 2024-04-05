@@ -34,6 +34,20 @@
 }
 
 
+
+
+
+/* EventCalendar.css */
+@media (max-width: 576px) {
+  .fc-daygrid-event, .fc-timegrid-event { /* Style for events */
+    font-size: 10px; /* Reduce font size further */
+    padding: 2px 4px; /* Adjust padding further */
+  }
+}
+
+
+
+
 @media only screen and (max-width: 1280px) {
   .text {
     width: 39em;

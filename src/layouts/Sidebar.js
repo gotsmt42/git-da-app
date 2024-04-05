@@ -6,7 +6,7 @@ import {
   BiChevronRight,
   BiUpload,
   BiFile,
-  BiFileFind
+  BiCalendarEvent
   
 } from "react-icons/bi"; // Import icons from React Icons
 import probg from "../assets/images/bg/download.jpg";
@@ -19,6 +19,11 @@ const navigation = [
     title: "Dashboard",
     href: "/starter",
     icon: "bi-speedometer2",
+  },
+  {
+    title: "ตารางแผนงาน",
+    href: "/event",
+    icon: "bi-calendar-event",
   },
 
   {

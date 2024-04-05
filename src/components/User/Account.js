@@ -22,7 +22,6 @@ const Account = () => {
   //useEffect for get data
   useEffect(() => {
     getUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //ฟังชั่น get ข้อมูล User ที่ login ตาม jwt

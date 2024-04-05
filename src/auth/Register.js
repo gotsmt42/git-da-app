@@ -10,6 +10,7 @@ import { Facebook } from "@mui/icons-material";
 import "./form.css";
 
 import API from "../API/axiosInstance";
+import Swal from "sweetalert2";
 
 
 const Register = () => {
@@ -19,27 +20,93 @@ const Register = () => {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [tel, setTel] = useState("");
-  // const [token, setToken] = useState("");
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
-    try {
-      await API.post("/auth/signup", {
-        fname,
-        lname,
-        tel,
-        email,
-        username,
-        password,
-      });
-      // const { token } = response.data;
-      // setToken(token);
-      // localStorage.setItem("token", token);
+  const handleValidation = () => {
+    let formIsValid = true;
+    let errors = {};
+  
+    // Validate First Name
+    if (!fname) {
+      formIsValid = false;
+      errors["fname"] = "Please enter your first name.";
+    }
+  
+    // Validate Last Name
+    if (!lname) {
+      formIsValid = false;
+      errors["lname"] = "Please enter your last name.";
+    }
+  
+    // Validate Email
+    if (!email) {
+      formIsValid = false;
+      errors["email"] = "Please enter your email.";
+    } else {
+      // Regular expression for email validation
+      let emailPattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+      if (!emailPattern.test(email)) {
+        formIsValid = false;
+        errors["email"] = "Please enter a valid email address.";
+      }
+    }
+  
+    // Validate Telephone
+    if (!tel) {
+      formIsValid = false;
+      errors["tel"] = "Please enter your telephone number.";
+    }
+  
+    // Validate Username
+    if (!username) {
+      formIsValid = false;
+      errors["username"] = "Please enter your username.";
+    }
+  
+    // Validate Password
+    if (!password) {
+      formIsValid = false;
+      errors["password"] = "Please enter your password.";
+    } else if (password.length < 4) {
+      formIsValid = false;
+      errors["password"] = "Password must be at least 4 characters long.";
+    }
+  
+    setErrors(errors);
+    return formIsValid;
+  };
 
-      navigate("/login");
-    } catch (error) {
-      console.error("Registration failed", error);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (handleValidation()) {
+      try {
+        await API.post("/auth/signup", {
+          fname,
+          lname,
+          tel,
+          email,
+          username,
+          password,
+        });
+
+        navigate("/login");
+
+        Swal.fire({
+          icon: "success",
+          title:"สมัครสมาชิกสำเร็จ",
+          timer:2000
+        })
+      } catch (error) {
+        console.error("Registration failed", error);
+        Swal.fire({
+          icon: "error",
+          title: "Registration failed",
+          text: error.response.data.message
+        });
+        
+      }
     }
   };
 
@@ -65,6 +132,9 @@ const Register = () => {
                           className="form-control"
                           onChange={(e) => setFname(e.target.value)}
                         />
+                        <span className="text-danger">
+                          {errors["fname"]}
+                        </span>
                       </div>
                     </div>
                     <div className="col">
@@ -75,6 +145,9 @@ const Register = () => {
                           className="form-control"
                           onChange={(e) => setLname(e.target.value)}
                         />
+                        <span className="text-danger">
+                          {errors["lname"]}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -86,16 +159,17 @@ const Register = () => {
                       className="form-control"
                       onChange={(e) => setEmail(e.target.value)}
                     />
+                    <span className="text-danger">{errors["email"]}</span>
                   </div>
 
                   <div className="form-group">
                     <label>Tel.</label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       onChange={(e) => setTel(e.target.value)}
-                      
                     />
+                    <span className="text-danger">{errors["tel"]}</span>
                   </div>
 
                   <div className="form-group">
@@ -106,6 +180,7 @@ const Register = () => {
                       onChange={(e) => setUsername(e.target.value)}
                       required
                     />
+                    <span className="text-danger">{errors["username"]}</span>
                   </div>
                   <div className="form-group">
                     <label>Password</label>
@@ -115,6 +190,7 @@ const Register = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
+                    <span className="text-danger">{errors["password"]}</span>
                   </div>
                   <button className="btn signup" type="submit">
                     signup
@@ -145,28 +221,6 @@ const Register = () => {
         </div>
       </div>
     </div>
-
-    // <div>
-    //   <input
-    //     type="email"
-    //     placeholder="Email"
-    //     onChange={(e) => setEmail(e.target.value)}
-    //   />
-    //   <input
-    //     type="text"
-    //     placeholder="Username"
-    //     onChange={(e) => setUsername(e.target.value)}
-    //     required
-    //   />
-    //   <input
-    //     type="password"
-    //     placeholder="Password"
-    //     onChange={(e) => setPassword(e.target.value)}
-    //     required
-    //   />
-    //   <button onClick={handleRegister}>Register</button>
-    //   <Link to={`/login`}>Login</Link>
-    // </div>
   );
 };
 

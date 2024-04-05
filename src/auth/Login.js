@@ -1,52 +1,69 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import Swal from "sweetalert2";
+import API from "../API/axiosInstance";
+
 import "./form.css";
 import Google from "@mui/icons-material/Google";
 import { Button } from "react-bootstrap";
 import { Facebook } from "@mui/icons-material";
 
-import API from "../API/axiosInstance";
+import { useAuth } from "./AuthContext";
 
 const Login = () => {
-
-  const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-
+  const location = useLocation()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
+  const {login} = useAuth()
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     // ถ้ามี Token ใน Local Storage ให้ทำการ navigate ไปยังหน้า Starter
-  //     navigate("/starter");
-  //   }
-  // }, []); // ใส่ [] เพื่อให้ useEffect ทำงานเฉพาะเมื่อ Component ถูก Mount ครั้งแรกเท่านั้น
-  
+  const handleValidation = () => {
+    let formIsValid = true;
+    let errors = {};
 
+    // Validate Username
+    if (!username) {
+      formIsValid = false;
+      errors["username"] = "Please enter your username or email.";
+    }
+
+    // Validate Password
+    if (!password) {
+      formIsValid = false;
+      errors["password"] = "Please enter your password.";
+    }
+
+    setErrors(errors);
+    return formIsValid;
+  };
 
   const handleLogin = async (e) => {
-    try {
-      e.preventDefault();
+    e.preventDefault();
+    if (handleValidation()) {
+      try {
+        const response = await API.post(`/auth/login`, {
+          username,
+          password,
+        });
+        const { token, payload } = response.data;
+  
+        login(token, payload);
 
-      const response = await API.post(`/auth/login`, {
-        username,
-        password,
-      });
-      const { token, payload } = response.data;
+        
+  
+        const { from } = location.state || { from: { pathname: "/starter" } }; // ถ้าไม่มี state ให้กลับไปที่หน้าหลัก
+        navigate(from);
 
-      login(token, payload);
-
-      const { from } = location.state || { from: { pathname: "/starter" } }; // ถ้าไม่มี state ให้กลับไปที่หน้าหลัก
-      navigate(from);
-
-      console.log(token);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Login failed", error);
+      } catch (error) {
+        console.error("Login failed", error);
+        Swal.fire({
+          icon: "error",
+          title: "Login failed",
+          text: error.response.data.err,
+        });
+      }
     }
   };
 
@@ -69,8 +86,8 @@ const Login = () => {
                       type="text"
                       className="form-control"
                       onChange={(e) => setUsername(e.target.value)}
-                      required
                     />
+                    <span className="text-danger">{errors["username"]}</span>
                   </div>
                   <div className="form-group">
                     <label>Password</label>
@@ -78,8 +95,8 @@ const Login = () => {
                       type="password"
                       className="form-control"
                       onChange={(e) => setPassword(e.target.value)}
-                      required
                     />
+                    <span className="text-danger">{errors["password"]}</span>
                   </div>
                   <button className="btn signin" type="submit">
                     Login
@@ -94,13 +111,11 @@ const Login = () => {
                 <ul className="social-links">
                   <li>
                     <Button variant="danger">
-                      {" "}
                       <Google /> Login with Google
                     </Button>
                   </li>
                   <li>
                     <Button variant="primary">
-                      {" "}
                       <Facebook /> Login with Facebook
                     </Button>
                   </li>

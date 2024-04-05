@@ -92,7 +92,7 @@ const ProductComponent = () => {
   //ฟังชั่น get ข้อมูล User ที่ login ตาม jwt
   const getUserData = async () => {
     const getUser = await AuthService.getUserData();
-    setUser(getUser.username);
+    setUser(getUser.user);
   };
 
   //ฟังชั่น get ข้อมูล User Data มาแสดงทั้งหมด
@@ -279,7 +279,7 @@ const ProductComponent = () => {
   return (
     <>
       <DataTableComponent
-        title={`${user} - Product`}
+        title={`${user.username} - Product`}
         columns={DataTableColumns({
           setSelectedRow,
           setEditedData,
