@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkda_app=self.webpackChunkda_app||[]).push([[96],{5096:(a,e,n)=>{n.r(e),n.d(e,{default:()=>s});var p=n(2496);const s=()=>(0,p.jsx)(p.Fragment,{children:"About Page Comming Soon...."})}}]);
+//# sourceMappingURL=96.7fb9fb35.chunk.js.map
