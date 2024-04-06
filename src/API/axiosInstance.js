@@ -1,6 +1,6 @@
 import axios from "axios";
-
 const API = axios.create({
+  
   baseURL: process.env.REACT_APP_API_URL, // ใช้ Environment Variable ที่ชื่อ APP_API_URL
   headers: {
     Accept: "application/json", // แก้ไข Content-Type ให้เป็น application/json
