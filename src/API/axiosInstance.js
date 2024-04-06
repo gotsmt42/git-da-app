@@ -1,5 +1,4 @@
 import axios from "axios";
-console.log(process.env.REACT_APP_API_URL)
 const API = axios.create({
   
   baseURL: process.env.REACT_APP_API_URL, // ใช้ Environment Variable ที่ชื่อ APP_API_URL
