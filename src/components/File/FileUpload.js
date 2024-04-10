@@ -7,8 +7,8 @@ import Swal from "sweetalert2";
 import { ThreeDots } from "react-loader-spinner";
 import { getFileIcon, getFileIconColor } from "../../functions/CustomFile";
 
-const MAX_FILE_SIZE_MB = 250; // ขนาดไฟล์สูงสุดที่อนุญาต (MB)
-const MAX_UPLOAD_FILE = 100;
+const MAX_FILE_SIZE_MB = 500 // ขนาดไฟล์สูงสุดที่อนุญาต (MB)
+const MAX_UPLOAD_FILE = 500;
 
 const FileUpload = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
