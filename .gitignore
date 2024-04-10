@@ -1,2 +1,6 @@
 node_modules
+<<<<<<< HEAD
 asset/uploads/files
+=======
+asset/uploads/files/
+>>>>>>> origin/da-app-server
