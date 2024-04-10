@@ -1,4 +1,6 @@
 require('dotenv').config(); // เรียกใช้ dotenv เพื่อโหลด Environment Variables
+const https = require('https');
+const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,24 +9,22 @@ const productRouter = require('./routes/product');
 const fileRouter = require('./routes/file');
 const calendarEventRouter = require('./routes/calendarEvent');
 
+const cors = require('cors');
+
+
 const app = express();
 const PORT = process.env.APP_PORT;
 
-// ใช้ Environment Variables จากไฟล์ .env
-const apiURL = process.env.APP_API_URL;
-const apiKey = process.env.APP_API_KEY;
-const secret = process.env.APP_SECRET;
 
+const corsOptions = {
+  origin: ['https://da-app--office-da-app.netlify.app', 'http://localhost:3000'], // ระบุโดเมนที่ยอมรับ CORS requests จากนั้น
+  credentials: true, // อนุญาตให้ส่ง cookies ระหว่างโดเมน
+};
 
-console.log({apiURL});
-console.log({apiKey});
-console.log({secret});
-
-const cors = require('cors');
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/auth', authRouter);
 app.use('/api/product', productRouter);
@@ -35,6 +35,17 @@ app.use('/api/asset/uploads/files', express.static(__dirname + '/asset/uploads/f
 
 app.use('/api/asset/image', express.static(__dirname + '/asset/image'));
 
-app.listen(PORT, () => {
+
+
+
+const options = {
+  key: fs.readFileSync("C:/Program Files/OpenSSL-Win64/keys/localhost.key"),
+  cert: fs.readFileSync("C:/Program Files/OpenSSL-Win64/keys/localhost.crt")
+};
+
+const server = https.createServer(options, app)
+
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
