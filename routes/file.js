@@ -129,28 +129,29 @@ router.delete("/:id", verifyToken, async (req, res) => {
       return res.status(404).send("File not found.");
     }
 
-    // Check if the authenticated user is the owner of the file or an admin
-    if (fileToDelete.userId !== req.userId && req.user.role !== "admin") {
-      return res.status(403).send("Unauthorized to delete this file.");
-    }
+    // // Check if the authenticated user is the owner of the file or an admin
+    // if (fileToDelete.userId !== req.userId && req.user.role !== "admin") {
+    //   return res.status(403).send("Unauthorized to delete this file.");
+    // }
 
     // Delete file data from database
     await File.findByIdAndDelete(id);
 
-    // Check if the file exists in disk
-    if (!fs.existsSync(fileToDelete.path)) {
-      return res.status(404).send("File not found in disk.");
-    }
+    // // Check if the file exists in disk
+    // if (!fs.existsSync(fileToDelete.path)) {
+    //   return res.status(404).send("File not found in disk.");
+    // }
 
-    // Delete file from disk
-    fs.unlink(fileToDelete.path, async (err) => {
-      if (err) {
-        console.error("Error deleting file from disk:", err);
-        return res.status(500).send("Error deleting file from disk.");
-      }
+    // // Delete file from disk
+    // fs.unlink(fileToDelete.path, async (err) => {
+    //   if (err) {
+    //     console.error("Error deleting file from disk:", err);
+    //     return res.status(500).send("Error deleting file from disk.");
+    //   }
 
-      res.status(200).send("File deleted successfully");
-    });
+    //   res.status(200).send("File deleted successfully");
+    // });
+    res.status(200).send("File deleted successfully");
   } catch (err) {
     console.error("Error deleting file:", err);
     if (err.response && err.response.status === 404) {

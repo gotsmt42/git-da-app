@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const CalendarEvent = require("../models/CalendarEvent");
+const CalendarEvent = require("../models/Events");
 const User = require("../models/User");
 
 const axios = require("axios");
@@ -14,12 +14,10 @@ router.get("/linenotify", verifyToken, async (req, res) => {
 
     await sendLineNotification(`\n${message}`);
 
-
     // ส่งข้อความผ่าน Line Notify
     async function sendLineNotification(message) {
       const url_line_notification = `${process.env.APP_URL_LINE_NOTIFY}`;
-      const footer =
-      `\nข้อความนี้ถูกส่งโดยระบบแจ้งเตือนการอัพเดตแผนงานสำหรับข้อมูลเพิ่มเติมคลิ๊กที่นี่: ${process.env.APP_API_URL}/event`;
+      const footer = `\nข้อความนี้ถูกส่งโดยระบบแจ้งเตือนการอัพเดตแผนงานสำหรับข้อมูลเพิ่มเติมคลิ๊กที่นี่: ${process.env.APP_API_URL}/event`;
 
       // เพิ่ม footer ในข้อความ
       message += footer;
@@ -45,13 +43,26 @@ router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req.userId;
 
-    const { title, date, backgroundColor, textColor, fontSize } = req.body;
+    const {
+      title,
+      date,
+      backgroundColor,
+      textColor,
+      fontSize,
+      start,
+      end,
+      allDay,
+    } = req.body;
     const event = new CalendarEvent({
       title,
       date,
       backgroundColor,
       textColor,
       fontSize,
+      start,
+      end,
+      allDay,
+
       userId,
     });
     await event.save();
@@ -108,7 +119,8 @@ router.get("/", verifyToken, async (req, res) => {
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const id = req.params.id;
-    const { title, date, backgroundColor, textColor, fontSize } = req.body;
+    const { title, date, backgroundColor, textColor, fontSize, start, end, allDay } =
+      req.body;
 
     console.log(id);
     console.log(req.body);
@@ -119,6 +131,9 @@ router.put("/:id", verifyToken, async (req, res) => {
       backgroundColor,
       textColor,
       fontSize,
+      start,
+      end,
+      allDay
     };
 
     const updatedEvent = await CalendarEvent.findOneAndUpdate(
