@@ -15,13 +15,13 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.APP_PORT;
 
-// const corsOptions = {
-//   origin: [
-//     "https://da-app--office-da-app.netlify.app",
-//     "http://localhost:3000",
-//   ], // ระบุโดเมนที่ยอมรับ CORS requests จากนั้น
-//   credentials: true, // อนุญาตให้ส่ง cookies ระหว่างโดเมน
-// };
+const corsOptions = {
+  origin: [
+    "https://da-app--office-da-app.netlify.app",
+    "http://localhost:3000",
+  ], // ระบุโดเมนที่ยอมรับ CORS requests จากนั้น
+  credentials: true, // อนุญาตให้ส่ง cookies ระหว่างโดเมน
+};
 
 
 app.use(morgan("dev"))
