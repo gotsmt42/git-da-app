@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // for selectable
@@ -19,8 +19,7 @@ function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [defaultAllDay, setdefaultAllDay] = useState(true); // สีข้อความเริ่มต้น
   const [defaultTextColor, setDefaultTextColor] = useState("#FFFFFF"); // สีข้อความเริ่มต้น
-  const [defaultBackgroundColor, setDefaultBackgroundColor] =
-    useState("#FF638E"); // สีพื้นหลังเริ่มต้น
+  const [defaultBackgroundColor, setDefaultBackgroundColor] = useState("#FF638E"); // สีพื้นหลังเริ่มต้น
   const [defaultFontSize, setDefaultFontSize] = useState(14); // สีพื้นหลังเริ่มต้น
 
   useEffect(() => {
@@ -203,68 +202,69 @@ function EventCalendar() {
       newEnd = eventEnd;
     } else {
       newStart = eventStart;
-
-      newEnd = eventEnd; // ลดวันลง 1 วัน
+      newEnd = eventEnd;
     }
+
+    const htmlEdit = `
+    <label for="editTitle">Title : </label>
+    <input id="editTitle" class="swal2-input" type="text" value="${eventTitle}" 
+    style="margin-bottom: 1rem;"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
+    
+    <br>
+
+    <label for="editFontSize">Font Size : </label><br>
+    <select id="editFontSize" class="swal2-input">
+      <option selected disabled>${eventFontSize}</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="14">14</option>
+      <option value="16">16</option>
+      <option value="18">18</option>
+      <option value="20">20</option>
+      <option value="22">22</option>
+      <option value="24">24</option>
+      <option value="26">26</option>
+      <option value="28">28</option>
+      <option value="36">36</option>
+      <option value="48">48</option>
+      <option value="72">72</option>
+    </select><br><br>
+
+    <label for="editBackgroundColor">Background Color : </label><br>
+    <div id="backgroundColorPickerContainer"></div><br>
+
+    <label for="editTextColor">Text Color : </label><br>
+    <div id="textColorPickerContainer" class="swal2-input"></div>
+
+    <label for="editStart">Start : </label>
+    <input id="editStart" type="datetime-local" class="swal2-input" value="${newStart.format(
+      "YYYY-MM-DDTHH:mm"
+    )}" style="margin-bottom: 1rem;"><br>
+
+    <label for="fakeEditEnd">End :</label>
+    <input id="fakeEditEnd" type="datetime-local" class="swal2-input" value="${
+      eventAllDay
+        ? moment(newEnd).subtract(1, "days").format("YYYY-MM-DDTHH:mm")
+        : moment(newEnd).format("YYYY-MM-DDTHH:mm")
+    }" style="margin-bottom: 1rem;"><br>
+
+    <input id="editEnd" type="datetime-local" class="swal2-input" style="display: none; margin-bottom: 1rem;"><br>
+
+    <span style='color:red'; font-size: 2px>ถ้าต้องการตั้งระยะเวลาของเหตุการณ์ กรุณาตั้งค่า All-Day เป็น False ก่อน</span> <br><br>
+    <label for="editAllDay">All-Day : </label>
+    <select id="editAllDay" class="swal2-select">
+      <option selected disabled>${eventAllDay}</option>
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select><br><br>
+  `;
 
     Swal.fire({
       title: "Edit Event",
-      html: `
-        <label for="editTitle">Title : </label>
-        <input id="editTitle" class="swal2-input" type="text" value="${eventTitle}" 
-        style="margin-bottom: 1rem;"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
-        
-        <br>
-  
-        <label for="editFontSize">Font Size : </label><br>
-        <select id="editFontSize" class="swal2-input">
-          <option selected disabled>${eventFontSize}</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="14">14</option>
-          <option value="16">16</option>
-          <option value="18">18</option>
-          <option value="20">20</option>
-          <option value="22">22</option>
-          <option value="24">24</option>
-          <option value="26">26</option>
-          <option value="28">28</option>
-          <option value="36">36</option>
-          <option value="48">48</option>
-          <option value="72">72</option>
-        </select><br><br>
-  
-        <label for="editBackgroundColor">Background Color : </label><br>
-        <div id="backgroundColorPickerContainer"></div><br>
-  
-        <label for="editTextColor">Text Color : </label><br>
-        <div id="textColorPickerContainer" class="swal2-input"></div>
-  
-        <label for="editStart">Start : </label>
-        <input id="editStart" type="datetime-local" class="swal2-input" value="${newStart.format(
-          "YYYY-MM-DD HH:mm"
-        )}" style="margin-bottom: 1rem;"><br>
-  
-        <label for="fakeEditEnd">End :</label>
-        <input id="fakeEditEnd" type="datetime-local" class="swal2-input" value="${
-          eventAllDay
-            ? moment(eventEnd).subtract(1, "days").format("YYYY-MM-DDTHH:mm")
-            : moment(eventEnd).format("YYYY-MM-DDTHH:mm")
-        }" style="margin-bottom: 1rem;"><br>
-
-        <input id="editEnd" type="datetime-local" class="swal2-input" style="display: none; margin-bottom: 1rem;"><br>
-
-        <span style='color:red'; font-size: 2px>ถ้าต้องการตั้งเวลาระหว่างวันกรุณาตั้งค่า All-Day เป็น False ก่อน</span> <br><br>
-        <label for="editAllDay">All-Day : </label>
-        <select id="editAllDay" class="swal2-select">
-          <option selected disabled>${eventAllDay}</option>
-          <option value="true">True</option>
-          <option value="false">False</option>
-        </select><br><br>
-      `,
+      html: htmlEdit,
       didOpen: () => {
         document
           .getElementById("backgroundColorPickerContainer")
@@ -294,8 +294,7 @@ function EventCalendar() {
           .addEventListener("change", (e) => {
             const newEndDate = moment(e.target.value); // สร้างวัตถุ Moment จาก string
 
-            // const newEnd = newEndDate.clone().add(1, "days"); // สร้างวัตถุ Moment ใหม่โดยเพิ่ม 1 วัน
-            const formattedNewEnd = newEndDate.format("YYYY-MM-DD HH:mm"); // จัดรูปแบบวันที่
+            const formattedNewEnd = newEndDate.format("YYYY-MM-DDTHH:mm"); // จัดรูปแบบวันที่
 
             document.getElementById("editEnd").value = formattedNewEnd; // กำหนดค่าให้กับ editEnd
           });
@@ -317,9 +316,16 @@ function EventCalendar() {
 
         let end = document.getElementById("editEnd").value;
 
-        if (!isAllDay) {
-          // แปลง end ให้เป็นวันที่แบบ datetime
-          end = moment(end).toISOString();
+        if (end === "null" || end === "") {
+          // If end is null or empty, set end to original event end
+          end = eventEnd.format("YYYY-MM-DDTHH:mm");
+        } else {
+          if (!isAllDay) {
+            // Convert end to datetime format
+            end = moment(end).toISOString();
+          } else {
+            end = moment(end).add(1, "days").toISOString();
+          }
         }
 
         if (!title) {
@@ -373,7 +379,7 @@ function EventCalendar() {
           timer: 1000,
         });
       } else if (result.isDenied) {
-        handleDeleteEvent(eventInfo.event.id);
+        handleDeleteEvent(eventId);
       }
     });
   };
