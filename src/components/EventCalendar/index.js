@@ -539,10 +539,11 @@ function EventCalendar() {
   };
   return (
     <div>
-      <div className="mb-3">
-        <button className="btn btn-success " onClick={handleLineNotify}>
+      <div className="mb-5 d-flex flex-column">
+        <button className="btn btn-success" onClick={handleLineNotify}>
           <FontAwesomeIcon icon={faBell} /> ส่งแจ้งเตือนอัพเดตผ่าน LINE
         </button>
+
       </div>
       <FullCalendar
         timeZone="local"
@@ -584,11 +585,11 @@ function EventCalendar() {
                   // marginRight: "5px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  marginBottom: "3px",
+                  // marginBottom: "3px",
                   fontWeight: "bold",
                 }}
               >
-                {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
+               {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
                 {moment(eventInfo.event.endStr).format("HH:mm")}
               </span>
             ) : null}
@@ -603,7 +604,7 @@ function EventCalendar() {
                 // marginRight: "5px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                marginBottom: "5px",
+                // marginBottom: "5px",
               }}
             >
               <span
@@ -647,18 +648,16 @@ function EventCalendar() {
         dayMaxEventRows={true} // ใช้งานการแสดงเหตุการณ์ที่ยาวนานใน dayGridMonth
         views={{
           listWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
           },
           dayGridMonth: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
           },
           timeGridWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
-            selectConstraint: "businessHours", // ตั้งค่าการเลือกเวลาเฉพาะในช่วงเวลาทำการ
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
           },
           timeGridDay: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
-            selectConstraint: "businessHours", // ตั้งค่าการเลือกเวลาเฉพาะในช่วงเวลาทำการ
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
           },
         }}
       />

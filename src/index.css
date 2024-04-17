@@ -35,15 +35,69 @@
 
 
 
+/* CSS สำหรับปรับขนาดตัวหนังสือของวันและวันที่ใน FullCalendar เมื่อหน้าจอเล็ก */
 
+@media (max-width: 768px) {
+  .fc-daygrid-day-number { /* เลือกตัวหนังสือของวันที่ */
+    font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
+  }
+  .fc-daygrid-day { /* เลือกตัวหนังสือของวัน */
+    font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
+  }
 
-/* EventCalendar.css */
+  .fc-col-header-cell, .fc-day-header { /* เลือกส่วนหัวของวัน */
+    font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
+  }
+
+}
+
 @media (max-width: 576px) {
-  .fc-daygrid-event, .fc-timegrid-event { /* Style for events */
-    font-size: 10px; /* Reduce font size further */
-    padding: 2px 4px; /* Adjust padding further */
+  .fc-header-toolbar {
+    flex-direction: column;
+    padding: 20px;
+
+  }
+
+  .fc-header-toolbar .fc-left,
+  .fc-header-toolbar .fc-center,
+  .fc-header-toolbar .fc-right {
+    width: 100%;
+    margin-bottom: 10px;
+  
+
+
+  }
+
+ 
+
+  .fc-day-header {
+        font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
+
+    min-width: 40px;
+  }
+
+  .fc-list-heading td,
+  .fc-list-heading thead th {
+    text-align: center;
+
+  }
+
+  .fc-list-day-cushion,
+  .fc-list-heading thead td,
+  .fc-list-heading thead th {
+    padding: 5px;
+    
+  }
+
+  .fc-scrollgrid {
+    
+    /* height: 100vh; */
   }
 }
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 import { lazy } from "react";
-import { Navigate } from "react-router-dom";
+import { Outlet, useNavigate, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -24,17 +25,27 @@ const EventCalendar = lazy(() => import("../views/ui/EventCalendar.js"));
 const Login = lazy(() => import("../auth/Login.js"));
 const Register = lazy(() => import("../auth/Register.js"));
 
+const PrivateRouteContent = () => {
+  const navigate = useNavigate();
+  navigate("/dashboard");
+};
+
 const ThemeRoutes = [
   {
     path: "/",
     element: (
       <PrivateRoute>
         <FullLayout />
+
       </PrivateRoute>
     ),
     children: [
-      { path: "/", element: <Navigate to="/dashboard" /> },
-      { path: "/dashboard", exact: true, element: <Dashboard />, title: "Dashboard" },
+      {
+        path: "/dashboard",
+        exact: true,
+        element: <Dashboard />,
+        title: "Dashboard",
+      },
       { path: "/about", exact: true, element: <About />, title: "About" },
       { path: "/account", exact: true, element: <Account />, title: "Account" },
       { path: "/alerts", exact: true, element: <Alerts />, title: "Alerts" },

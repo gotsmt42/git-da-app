@@ -23,6 +23,7 @@ const FullLayout = () => {
 
         {/* Content Area */}
         <div className="contentArea" onClick={closeSidebar}>
+
           {/* Middle Content */}
           <Container className="p-4" fluid>
             <Outlet />
