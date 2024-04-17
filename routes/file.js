@@ -19,7 +19,7 @@ router.post("/", verifyToken, async (req, res) => {
       },
       filename: async (req, file, callback) => {
         const decodedFilename = decodeURIComponent(file.originalname);
-        let newFilename = file.originalname;
+        let newFilename = decodedFilename;
         let count = 1;
 
         try {
