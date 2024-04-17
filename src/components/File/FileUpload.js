@@ -88,7 +88,6 @@ const FileUpload = () => {
           },
         };
   
-        // ตรวจสอบให้แน่ใจว่าคุณใช้ axios หรือ method ที่เกี่ยวข้องเพื่อทำการอัปโหลดไฟล์
         await FileService.uploadFiles(formData, config);
   
         setUploadedFiles([]);
@@ -102,17 +101,22 @@ const FileUpload = () => {
         });
       } catch (error) {
         console.error("Error uploading files:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Upload Failed",
+          text: "An error occurred while uploading files. Please try again.",
+        });
         setLoading(false);
         setUploadProgress(0);
       }
     } else {
       Swal.fire({
         icon: "warning",
-        title: "ไม่พบไฟล์",
-        text: "กรุณาอัพโหลดไฟล์ก่อน",
-
-        confirmButtonColor: "#333"
-      });    }
+        title: "No Files Selected",
+        text: "Please upload files before proceeding.",
+        confirmButtonColor: "#333",
+      });
+    }
   };
   
   

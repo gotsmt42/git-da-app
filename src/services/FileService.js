@@ -16,18 +16,16 @@ const FileService = {
     }
   },
 
-  async uploadFiles(acceptedFiles) {
+  async uploadFiles(formData, config) {
     try {
       const userData = await AuthService.getUserData();
       if (userData) {
-        const formData = new FormData();
-        acceptedFiles.forEach((file) => {
-          formData.append("files", file); // ส่งไฟล์ผ่านฟิลด์ที่ชื่อ "files" แทน "file"
-        });
         const response = await API.post(`/files`, formData, {
+          ...config, // ใช้ spread operator เพื่อนำ config ทั้งหมดเข้าไปในการเรียก API.post
+
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         }); // อัปโหลดไฟล์
         return response.data;
       }

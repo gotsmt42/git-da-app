@@ -47,12 +47,12 @@ import { Col, Row } from "reactstrap";
 
 
 
-const Starter = () => {
+const Dashboard = () => {
   return (
     <div>
       {/***Top Cards***/}
 
-      <h1>Starter Page Comming Soon...</h1>
+      <h1>Dashboard Page Comming Soon...</h1>
 
       {/***Sales & Feed***/}
       <Row>
@@ -87,4 +87,4 @@ const Starter = () => {
   );
 };
 
-export default Starter;
+export default Dashboard;

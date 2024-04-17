@@ -6,7 +6,7 @@ import {
   BiChevronRight,
   BiUpload,
   BiFile,
-  BiCalendarEvent
+  
   
 } from "react-icons/bi"; // Import icons from React Icons
 import probg from "../assets/images/bg/download.jpg";
@@ -17,7 +17,7 @@ import API from "../API/axiosInstance";
 const navigation = [
   {
     title: "Dashboard",
-    href: "/starter",
+    href: "/dashboard",
     icon: "bi-speedometer2",
   },
   {
@@ -62,7 +62,7 @@ const Sidebar = () => {
   useEffect(() => {
     getUserData();
     
-  }, [user]);
+  }, [1000]);
 
   const getUserData = async () => {
     const getUser = await AuthService.getUserData();
@@ -95,7 +95,7 @@ const Sidebar = () => {
           {user.fname} {user.lname} ({user.role})
         </div>
       </div>
-      <div className="p-3 mt-2">
+      <div className="p-3 mt-2 ">
         <Nav vertical className="sidebarNav">
           {navigation.map((navi, index) => (
             <NavItem key={index} className="sidenav-bg ">

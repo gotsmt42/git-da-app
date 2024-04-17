@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-new Update 10/4/67
-=======
-new Update 7/4/67
->>>>>>> 2b15352e002d2424d2d8c8e6b0097defbd3a5b2c
-
+# New Update 17/4/67
 
 # Getting Started with Create React App
 

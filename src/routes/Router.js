@@ -6,7 +6,7 @@ const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 const PrivateRoute = lazy(() => import("./PrivateRoute.js"));
 
 /***** Pages ****/
-const Starter = lazy(() => import("../views/Starter.js"));
+const Dashboard = lazy(() => import("../views/Dashboard.js"));
 const About = lazy(() => import("../views/About.js"));
 const Alerts = lazy(() => import("../views/ui/Alerts"));
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -33,8 +33,8 @@ const ThemeRoutes = [
       </PrivateRoute>
     ),
     children: [
-      { path: "/", element: <Navigate to="/starter" /> },
-      { path: "/starter", exact: true, element: <Starter />, title: "Starter" },
+      { path: "/", element: <Navigate to="/dashboard" /> },
+      { path: "/dashboard", exact: true, element: <Dashboard />, title: "Dashboard" },
       { path: "/about", exact: true, element: <About />, title: "About" },
       { path: "/account", exact: true, element: <Account />, title: "Account" },
       { path: "/alerts", exact: true, element: <Alerts />, title: "Alerts" },

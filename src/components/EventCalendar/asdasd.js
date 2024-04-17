@@ -21,7 +21,9 @@ function EventCalendar() {
   const [defaultTextColor, setDefaultTextColor] = useState("#FFFFFF"); // สีข้อความเริ่มต้น
   const [defaultBackgroundColor, setDefaultBackgroundColor] =
     useState("#FF638E"); // สีพื้นหลังเริ่มต้น
-  const [defaultFontSize, setDefaultFontSize] = useState(14); // สีพื้นหลังเริ่มต้น
+  const [defaultFontSize, setDefaultFontSize] = useState(12); // สีพื้นหลังเริ่มต้น
+
+  const calendarRef = useRef(null); // Reference to access FullCalendar component
 
   useEffect(() => {
     fetchEventsFromDB(); // Fetch events when component mounts
@@ -52,12 +54,6 @@ function EventCalendar() {
     Swal.fire({
       title: "Enter details for your event:",
       html: `
-
-      <label for="editTitle">Title : </label>
-
-      <input id="eventTitle" type="text" class="swal2-input" placeholder="Event Title"> <br><br>
-
-
         <label for="fontSize">Font Size:</label><br>
         <select id="fontSize" class="swal2-input">
         
@@ -86,22 +82,23 @@ function EventCalendar() {
         <label for="backgroundColorPicker">Background Color:</label><br>
         <input id="backgroundColorPicker" type="color" value="${defaultBackgroundColor}" style="margin-bottom: 1rem;"><br>
   
-        <label for="start">Start:</label>
+        <label for="start">Start:</label><br>
         <input id="start" type="date" class="swal2-input" value="${arg.dateStr}" style="margin-bottom: 1rem;"><br>
   
-        <label for="end">End:</label>
+        <label for="end">End:</label><br>
         <input id="end" type="date" class="swal2-input"  value="${arg.dateStr}" style="margin-bottom: 1rem;"><br>
 
-        <label for="fontSize">All-Day: </label>
+        <label for="fontSize">All-Day: </label><br>
         <select id="allDay" class="swal2-select">
         
           <option value="${defaultAllDay}">${defaultAllDay}</option>
           <option value="false">False</option>
          
-        </select><br><br><br>
+        </select><br><br>
 
 
   
+        <input id="eventTitle" type="text" class="swal2-input" placeholder="Event Title">
       `,
       showCancelButton: true,
       confirmButtonText: "Save",
@@ -196,21 +193,17 @@ function EventCalendar() {
     const eventAllDay = eventInfo.event.allDay;
 
     let newEnd;
-    let newStart;
 
     if (eventStart.isSame(eventEnd, "day")) {
-      newStart = eventStart;
       newEnd = eventEnd;
     } else {
-      newStart = eventStart;
-
-      newEnd = eventEnd; // ลดวันลง 1 วัน
+      newEnd = eventEnd.subtract(1, "days"); // ลดวันลง 1 วัน
     }
 
     Swal.fire({
       title: "Edit Event",
       html: `
-        <label for="editTitle">Title : </label>
+        <label for="editTitle">Title : </label><br>
         <input id="editTitle" class="swal2-input" type="text" value="${eventTitle}" 
         style="margin-bottom: 1rem;"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
         
@@ -241,24 +234,19 @@ function EventCalendar() {
         <div id="backgroundColorPickerContainer"></div><br>
   
         <label for="editTextColor">Text Color : </label><br>
-        <div id="textColorPickerContainer" class="swal2-input"></div>
+        <div id="textColorPickerContainer"></div><br>
   
-        <label for="editStart">Start : </label>
-        <input id="editStart" type="datetime-local" class="swal2-input" value="${newStart.format(
-          "YYYY-MM-DD HH:mm"
+        <label for="editStart">Start : </label><br>
+        <input id="editStart" type="date" class="swal2-input" value="${eventStart.format(
+          "YYYY-MM-DD"
         )}" style="margin-bottom: 1rem;"><br>
   
-        <label for="fakeEditEnd">End :</label>
-        <input id="fakeEditEnd" type="datetime-local" class="swal2-input" value="${
-          eventAllDay
-            ? moment(eventEnd).subtract(1, "days").format("YYYY-MM-DDTHH:mm")
-            : moment(eventEnd).format("YYYY-MM-DDTHH:mm")
-        }" style="margin-bottom: 1rem;"><br>
-
-        <input id="editEnd" type="datetime-local" class="swal2-input" style="display: none; margin-bottom: 1rem;"><br>
-
-        <span style='color:red'; font-size: 2px>ถ้าต้องการตั้งเวลาระหว่างวันกรุณาตั้งค่า All-Day เป็น False ก่อน</span> <br><br>
-        <label for="editAllDay">All-Day : </label>
+        <label for="editEnd">End :</label><br>
+        <input id="editEnd" type="date" class="swal2-input"  value="${newEnd.format(
+          "YYYY-MM-DD"
+        )}" style="margin-bottom: 1rem;"><br>
+  
+        <label for="editAllDay">All-Day : </label><br>
         <select id="editAllDay" class="swal2-select">
           <option selected disabled>${eventAllDay}</option>
           <option value="true">True</option>
@@ -287,18 +275,6 @@ function EventCalendar() {
               timer: 1000,
             });
           });
-
-        // Handle change event for fakeEditEnd and update editEnd value
-        document
-          .getElementById("fakeEditEnd")
-          .addEventListener("change", (e) => {
-            const newEndDate = moment(e.target.value); // สร้างวัตถุ Moment จาก string
-
-            // const newEnd = newEndDate.clone().add(1, "days"); // สร้างวัตถุ Moment ใหม่โดยเพิ่ม 1 วัน
-            const formattedNewEnd = newEndDate.format("YYYY-MM-DD HH:mm"); // จัดรูปแบบวันที่
-
-            document.getElementById("editEnd").value = formattedNewEnd; // กำหนดค่าให้กับ editEnd
-          });
       },
       showDenyButton: true,
       showCancelButton: true,
@@ -310,21 +286,15 @@ function EventCalendar() {
         const textColor = inputTextColor.value;
         const backgroundColor = inputBackgroundColor.value;
         const fontSize = document.getElementById("editFontSize").value;
-
-        const isAllDay = document.getElementById("editAllDay").value === "true";
-
         const start = document.getElementById("editStart").value;
-
-        let end = document.getElementById("editEnd").value;
-
-        if (!isAllDay) {
-          // แปลง end ให้เป็นวันที่แบบ datetime
-          end = moment(end).toISOString();
-        }
+        const end = document.getElementById("editEnd").value;
+        const allDay = document.getElementById("editAllDay").value;
 
         if (!title) {
           Swal.showValidationMessage("Please enter a title");
         }
+
+        const newEnd = moment(end).add(1, "days");
 
         return {
           id: eventId,
@@ -333,8 +303,8 @@ function EventCalendar() {
           backgroundColor,
           fontSize,
           start,
-          end,
-          allDay: isAllDay,
+          end: newEnd.format("YYYY-MM-DD"),
+          allDay,
         };
       },
     }).then(async (result) => {
@@ -451,7 +421,7 @@ function EventCalendar() {
       backgroundColor: event.backgroundColor,
       fontSize: event.extendedProps.fontSize.toString(),
       start: event.startStr,
-      end: event.allDay ? newEnd.format("YYYY-MM-DD: HH:mm") : newEnd.format(), // ตรวจสอบ allDay ก่อนกำหนด end
+      end: event.allDay ? newEnd.format("YYYY-MM-DD") : newEnd.format(), // ตรวจสอบ allDay ก่อนกำหนด end
       allDay: event.allDay,
     };
 
@@ -461,6 +431,11 @@ function EventCalendar() {
     );
 
     setEvents(updatedEvents);
+
+    console.log(updatedEvent.start);
+    console.log(updatedEvent.end);
+
+    console.log(events);
 
     fetchEventsFromDB();
 
@@ -525,12 +500,32 @@ function EventCalendar() {
     }
   };
 
+  const handleEventDragStart = (arg) => {
+    // Check if CTRL key is pressed during event drag
+    if (!arg.jsEvent.ctrlKey) {
+      return; // Exit if CTRL key is not pressed
+    }
+    const draggedEvent = arg.event;
+    const calendarApi = calendarRef.current.getApi();
+
+    // Clone the event to be dragged
+    const clonedEvent = {
+      ...draggedEvent.toPlainObject(),
+      start: draggedEvent.startStr,
+      end: draggedEvent.endStr,
+    };
+
+    // Add the cloned event to FullCalendar
+    calendarApi.addEvent(clonedEvent);
+  };
+
   // ฟังก์ชันสำหรับการกำหนดรูปแบบเวลาในรูปแบบ 24 ชั่วโมง
   const formatTime = (date) => {
     const hours = date.getHours().toString().padStart(2, "0"); // แสดงชั่วโมงในรูปแบบ 2 ตัวอักษร (00-23)
     const minutes = date.getMinutes().toString().padStart(2, "0"); // แสดงนาทีในรูปแบบ 2 ตัวอักษร (00-59)
     return `${hours}:${minutes}`;
   };
+
   return (
     <div>
       <div className="mb-3">
@@ -539,6 +534,7 @@ function EventCalendar() {
         </button>
       </div>
       <FullCalendar
+        ref={calendarRef}
         timeZone="local"
         plugins={[
           dayGridPlugin,
@@ -552,93 +548,57 @@ function EventCalendar() {
         editable={true}
         events={events}
         dateClick={handleAddEvent}
-        eventDrop={handleEventDrop}
-        eventResize={handleEventResize}
-        allDaySlot={true}
-        nowIndicator={true}
-        selectMirror={true}
-        weekends={true}
-        // slotLabelFormat={{
-        //   hour: "2-digit",
-        //   minute: "2-digit",
-        //   omitZeroMinute: false,
-        //   hour12: false,
-        // }}
-
-        eventContent={(eventInfo) => (
-          <div>
-            {eventInfo.event.allDay === false ? (
-              <span
-                style={{
-                  // color: "#DC3741",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  // marginLeft: "5px",
-                  // marginRight: "5px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  marginBottom: "3px",
-                  fontWeight: "bold",
-                }}
-              >
-                {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
-                {moment(eventInfo.event.endStr).format("HH:mm")}
-              </span>
-            ) : null}
-            <div
-              style={{
-                backgroundColor: eventInfo.event.backgroundColor,
-                color: eventInfo.event.textColor,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                // marginLeft: "5px",
-                // marginRight: "5px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                marginBottom: "5px",
-              }}
-            >
-              <span
-                style={{
-                  whiteSpace: "nowrap",
-                  padding: "5px",
-                  fontSize: eventInfo.event.extendedProps.fontSize,
-                }}
-              >
-                {eventInfo.event.allDay === false ? (
-                  <span
-                    style={{
-                      whiteSpace: "nowrap",
-                      // padding: "5px",
-                      fontSize: eventInfo.event.extendedProps.fontSize,
-                    }}
-                  >
-                    {eventInfo.event.title}
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      whiteSpace: "nowrap",
-                      // padding: "5px",
-                      fontSize: eventInfo.event.extendedProps.fontSize,
-                    }}
-                  >
-                    {eventInfo.event.title}
-                  </span>
-                )}
-              </span>
-            </div>
-          </div>
-        )}
-        eventClick={handleEditEvent}
+        eventClick={ondblclick}
+        eventDragStart={handleEventDragStart} // Handle event drag start
         headerToolbar={{
           left: "prev,next today",
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
         }}
-        dayMaxEventRows={true} // ใช้งานการแสดงเหตุการณ์ที่ยาวนานใน dayGridMonth
+        eventContent={(eventInfo) => (
+          <div
+            style={{
+              backgroundColor: eventInfo.event.backgroundColor,
+              color: eventInfo.event.textColor,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            <span
+              style={{
+                whiteSpace: "nowrap",
+                padding: "5px",
+                fontSize: eventInfo.event.extendedProps.fontSize,
+              }}
+            >
+              {eventInfo.event.allDay === false ? (
+                <span
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontSize: eventInfo.event.extendedProps.fontSize,
+                  }}
+                >
+                  {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
+                  {moment(eventInfo.event.endStr).format("HH:mm")} -{" "}
+                  {eventInfo.event.title}
+                </span>
+              ) : (
+                <span
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontSize: eventInfo.event.extendedProps.fontSize,
+                  }}
+                >
+                  {eventInfo.event.title}
+                </span>
+              )}
+            </span>
+          </div>
+        )}
+        dayMaxEventRows={true}
         views={{
           listWeek: {
             dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
@@ -648,11 +608,11 @@ function EventCalendar() {
           },
           timeGridWeek: {
             dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
-            selectConstraint: "businessHours", // ตั้งค่าการเลือกเวลาเฉพาะในช่วงเวลาทำการ
+            selectConstraint: "businessHours",
           },
           timeGridDay: {
             dayMaxEventRows: window.innerWidth >= 576 ? 5 : 0,
-            selectConstraint: "businessHours", // ตั้งค่าการเลือกเวลาเฉพาะในช่วงเวลาทำการ
+            selectConstraint: "businessHours",
           },
         }}
       />

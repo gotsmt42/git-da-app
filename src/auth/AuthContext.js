@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  console.log("Login: " + isLoggedIn);
+  // console.log("Login: " + isLoggedIn);
 
   const login = (newToken, payload) => {
     // Store the token in local storage or wherever you prefer

@@ -43,7 +43,7 @@ const ProductService = {
       if (userData) {
         const response = await API.post(`/product`, formData); // เพิ่มข้อมูลสินค้า
 
-        console.log("Add Product data", response.data);
+        // console.log("Add Product data", response.data);
 
         return response.data.userProducts;
       }
@@ -78,7 +78,7 @@ const ProductService = {
         const response = await API.put(`/product/${productId}`, editedData); // เพิ่มข้อมูลสินค้า
         // const response = await API.put(`/product/${productId}`, formData); // เพิ่มข้อมูลสินค้า
 
-        console.log("Update Product data", response.data);
+        // console.log("Update Product data", response.data);
 
         return response.data;
       }
@@ -94,7 +94,7 @@ const ProductService = {
       if (userData) {
         const response = await API.delete(`/product/${productId}`); // ลบข้อมูลสินค้า
 
-        console.log("Delete Product Success", response.data);
+        // console.log("Delete Product Success", response.data);
 
         // return response.data.userProducts;
       }

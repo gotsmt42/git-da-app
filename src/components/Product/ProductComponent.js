@@ -111,7 +111,6 @@ const ProductComponent = () => {
       setRows([]);
       setLoading(false);
 
-      console.log(products);
     } catch (error) {
       console.error("Error fetching products:", error);
       setLoading(false);

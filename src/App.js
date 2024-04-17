@@ -38,7 +38,7 @@ const App = () => {
   };
   return (
     <div className="dark">
-      <title>{`DA-APP | ${pageTitle}`}</title>
+      <title>{`${pageTitle} - DA-APP`}</title>
       {routing}
     </div>
   );

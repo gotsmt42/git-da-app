@@ -21,22 +21,16 @@ import {
 import { swalLogout } from "../functions/user";
 import Swal from "sweetalert2";
 
-import { useNavigate } from "react-router-dom";
-
 import API from "../API/axiosInstance";
 
 const Header = () => {
-  const [modalOpenEdit, setModalOpenEdit] = useState(false);
-  const [editedData, setEditedData] = useState({});
-  const [selectedFile, setSelectedFile] = useState(null);
-
   const { logout } = useAuth();
 
   const [user, setUser] = useState({});
 
   useEffect(() => {
     getUserData();
-  }, [user]);
+  }, [1000]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,7 +48,6 @@ const Header = () => {
     const getUser = await AuthService.getUserData();
     setUser(getUser.user);
   };
-
 
   const handleLogout = async () => {
     await swalLogout().then((result) => {
@@ -75,11 +68,13 @@ const Header = () => {
     >
       <div className="d-flex align-items-center">
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
-        <NavbarBrand href="/">
-          <h2>Logo</h2>
 
-          {/* <LogoWhite className=" d-lg-none" /> */}
-        </NavbarBrand>
+        <NavbarBrand tag={Link} to="/dashboard">
+        <h2>Logo</h2>
+      </NavbarBrand>
+
+        {/* <LogoWhite className=" d-lg-none" /> */}
+
         <Button
           style={{ backgroundColor: "#FF638E" }}
           className=" d-lg-none"
@@ -106,8 +101,8 @@ const Header = () => {
       <Collapse navbar isOpen={isOpen}>
         <Nav className="me-auto" navbar>
           <NavItem>
-            <Link to="/starter" className="nav-link">
-              Starter
+            <Link to="/dashboard" className="nav-link">
+              Dashboard
             </Link>
           </NavItem>
           <NavItem>
@@ -127,9 +122,9 @@ const Header = () => {
                 <DropdownItem>Product </DropdownItem>
               </Link>
               <DropdownItem divider />
-              <a href="/starter" style={{ textDecoration: "none" }}>
+              <Link to="/dashboard" style={{ textDecoration: "none" }}>
                 <DropdownItem>Reset</DropdownItem>
-              </a>
+              </Link>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -142,7 +137,7 @@ const Header = () => {
               className="rounded-circle"
               width="30"
               height="30"
-            ></img>
+            />
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Info</DropdownItem>
