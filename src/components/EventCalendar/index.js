@@ -189,21 +189,12 @@ function EventCalendar() {
 
     const eventFontSize = eventInfo.event.extendedProps.fontSize;
 
-    const eventStart = moment(eventInfo.event.startStr);
-    const eventEnd = moment(eventInfo.event.endStr);
+    const eventStart = moment(eventInfo.event.start);
+    const eventEnd = moment(eventInfo.event.end);
+    
 
     const eventAllDay = eventInfo.event.allDay;
 
-    let newEnd;
-    let newStart;
-
-    if (eventStart.isSame(eventEnd, "day")) {
-      newStart = eventStart;
-      newEnd = eventEnd;
-    } else {
-      newStart = eventStart;
-      newEnd = eventEnd;
-    }
 
     const htmlEdit = `
     <label for="editTitle">Title : </label>
@@ -240,15 +231,15 @@ function EventCalendar() {
     <div id="textColorPickerContainer" class="swal2-input"></div>
 
     <label for="editStart">Start : </label>
-    <input id="editStart" type="datetime-local" class="swal2-input" value="${newStart.format(
+    <input id="editStart" type="datetime-local" class="swal2-input" value="${eventStart.format(
       "YYYY-MM-DDTHH:mm"
     )}" style="margin-bottom: 1rem;"><br>
 
     <label for="fakeEditEnd">End :</label>
     <input id="fakeEditEnd" type="datetime-local" class="swal2-input" value="${
       eventAllDay
-        ? moment(newEnd).subtract(1, "days").format("YYYY-MM-DDTHH:mm")
-        : moment(newEnd).format("YYYY-MM-DDTHH:mm")
+        ? moment(eventEnd).subtract(1, "days").format("YYYY-MM-DDTHH:mm")
+        : eventEnd.format("YYYY-MM-DDTHH:mm")
     }" style="margin-bottom: 1rem;"><br>
 
     <input id="editEnd" type="datetime-local" class="swal2-input" style="display: none; margin-bottom: 1rem;"><br>
@@ -294,7 +285,7 @@ function EventCalendar() {
           .addEventListener("change", (e) => {
             const newEndDate = moment(e.target.value); // สร้างวัตถุ Moment จาก string
 
-            const formattedNewEnd = newEndDate.format("YYYY-MM-DDTHH:mm"); // จัดรูปแบบวันที่
+            const formattedNewEnd = newEndDate.format("YYYY-MM-DDTHH:mm:ss"); // จัดรูปแบบวันที่
 
             document.getElementById("editEnd").value = formattedNewEnd; // กำหนดค่าให้กับ editEnd
           });
@@ -312,13 +303,12 @@ function EventCalendar() {
 
         const isAllDay = document.getElementById("editAllDay").value === "true";
 
-        const start = document.getElementById("editStart").value;
-
+        const start = moment(document.getElementById("editStart").value).toISOString();
         let end = document.getElementById("editEnd").value;
-
+        
         if (end === "null" || end === "") {
           // If end is null or empty, set end to original event end
-          end = eventEnd.format("YYYY-MM-DDTHH:mm");
+          end = eventEnd.toISOString();
         } else {
           if (!isAllDay) {
             // Convert end to datetime format
