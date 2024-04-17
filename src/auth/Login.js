@@ -54,7 +54,7 @@ const Login = () => {
         
   
         // const { from } = location.state || { from: { pathname: "/starter" } }; // ถ้าไม่มี state ให้กลับไปที่หน้าหลัก
-        navigate("/starter" );
+        navigate("/dashboard" );
 
       } catch (error) {
         console.error("Login failed", error);
