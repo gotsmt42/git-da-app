@@ -20,7 +20,7 @@ function EventCalendar() {
   const [defaultAllDay, setdefaultAllDay] = useState(true); // สีข้อความเริ่มต้น
   const [defaultTextColor, setDefaultTextColor] = useState("#FFFFFF"); // สีข้อความเริ่มต้น
   const [defaultBackgroundColor, setDefaultBackgroundColor] = useState("#FF638E"); // สีพื้นหลังเริ่มต้น
-  const [defaultFontSize, setDefaultFontSize] = useState(14); // สีพื้นหลังเริ่มต้น
+  const [defaultFontSize, setDefaultFontSize] = useState(11); // สีพื้นหลังเริ่มต้น
 
   useEffect(() => {
     fetchEventsFromDB(); // Fetch events when component mounts
@@ -49,7 +49,8 @@ function EventCalendar() {
 
   const handleAddEvent = (arg) => {
     Swal.fire({
-      title: "Enter details for your event:",
+      title: "Enter for your event:",
+      customClass: 'swal-wide',
       html: `
 
       <label for="editTitle">Title : </label>
@@ -256,6 +257,7 @@ function EventCalendar() {
     Swal.fire({
       title: "Edit Event",
       html: htmlEdit,
+      customClass: 'swal-wide',
       didOpen: () => {
         document
           .getElementById("backgroundColorPickerContainer")
@@ -573,13 +575,18 @@ function EventCalendar() {
                   alignItems: "center",
                   // marginLeft: "5px",
                   // marginRight: "5px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+          
                   // marginBottom: "3px",
+                  fontSize: "11px",
                   fontWeight: "bold",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  margin: "auto",
+                  
                 }}
               >
-               {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
+                {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
                 {moment(eventInfo.event.endStr).format("HH:mm")}
               </span>
             ) : null}
@@ -590,16 +597,17 @@ function EventCalendar() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                // marginLeft: "5px",
-                // marginRight: "5px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                // marginBottom: "5px",
+                border: "3px solid",
+                borderRadius: "20px",
+     
               }}
             >
               <span
                 style={{
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
                   whiteSpace: "nowrap",
+                  margin: "auto",
                   padding: "5px",
                   fontSize: eventInfo.event.extendedProps.fontSize,
                 }}
@@ -608,7 +616,6 @@ function EventCalendar() {
                   <span
                     style={{
                       whiteSpace: "nowrap",
-                      // padding: "5px",
                       fontSize: eventInfo.event.extendedProps.fontSize,
                     }}
                   >
@@ -618,7 +625,6 @@ function EventCalendar() {
                   <span
                     style={{
                       whiteSpace: "nowrap",
-                      // padding: "5px",
                       fontSize: eventInfo.event.extendedProps.fontSize,
                     }}
                   >
@@ -629,6 +635,7 @@ function EventCalendar() {
             </div>
           </div>
         )}
+        
         eventClick={handleEditEvent}
         headerToolbar={{
           left: "prev,next today",
@@ -638,16 +645,16 @@ function EventCalendar() {
         dayMaxEventRows={true} // ใช้งานการแสดงเหตุการณ์ที่ยาวนานใน dayGridMonth
         views={{
           listWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
           },
           dayGridMonth: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
           },
           timeGridWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
           },
           timeGridDay: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 1,
+            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
           },
         }}
       />

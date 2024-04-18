@@ -6,8 +6,6 @@ import {
   BiChevronRight,
   BiUpload,
   BiFile,
-  
-  
 } from "react-icons/bi"; // Import icons from React Icons
 import probg from "../assets/images/bg/download.jpg";
 
@@ -15,7 +13,6 @@ import AuthService from "../services/authService";
 import API from "../API/axiosInstance";
 
 const navigation = [
-
   {
     title: "Dashboard",
     href: "/dashboard",
@@ -62,7 +59,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     getUserData();
-    
   }, [1000]);
 
   const getUserData = async () => {
@@ -84,13 +80,15 @@ const Sidebar = () => {
         style={{ background: `url(${probg}) no-repeat` }}
       >
         <div className="p-3 d-flex">
-          <img
-            src={`${API.defaults.baseURL}/${user.imageUrl}`}
-            alt="user"
-            width="50"
-            height="50"
-            className="rounded-circle"
-          />
+          <Link to={'/account'}>
+            <img
+              src={`${API.defaults.baseURL}/${user.imageUrl}`}
+              alt="user"
+              width="50"
+              height="50"
+              className="rounded-circle"
+            />
+          </Link>
         </div>
         <div className="bg-dark text-white p-2 opacity-75">
           {user.fname} {user.lname} ({user.role})
@@ -109,9 +107,7 @@ const Sidebar = () => {
                     style={{ width: "100%", textAlign: "left" }}
                   >
                     <i className={`bi ${navi.icon}`}></i>
-                    <span className="ms-2 me-1">
-                      {navi.title}
-                    </span>
+                    <span className="ms-2 me-1">{navi.title}</span>
                     {collapsedMenu[index] ? (
                       <BiChevronDown />
                     ) : (
@@ -119,7 +115,6 @@ const Sidebar = () => {
                     )}
                   </button>
                   <Collapse
-                    
                     isOpen={collapsedMenu[index]}
                     style={{ paddingLeft: "21px" }}
                   >

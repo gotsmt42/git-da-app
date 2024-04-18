@@ -1,15 +1,21 @@
-.sidebar {
-  /* your existing styles */
-  display: none; /* hide sidebar by default */
+* {
+  font-family: "Montserrat", sans-serif;
 }
 
-.showSidebar .sidebar {
-  display: block; /* show sidebar when .showSidebar is active */
+
+
+
+.swal-wide {
+  width:850px !important
+
 }
 
-.sidebar-menu-item-white {
-  background-color: white; /* กำหนดสีพื้นหลังเป็นสีขาว */
+@media (max-width: 768px) {
+.swal2-popup {
+  font-size: 10px !important;
 }
+}
+
 .img-preview {
   max-width: 100%;
   max-height: calc(100vh - 290px); /* ลองปรับค่าตามความต้องการ */
@@ -20,6 +26,7 @@
 .text {
   width: 49em;
 }
+
 .loading-overlay {
   display: flex;
   justify-content: center;
@@ -33,29 +40,57 @@
   z-index: 9999; /* ตั้งค่า Z-index เพื่อให้แสดงเหนือหน้าอื่น */
 }
 
+.fc-col-header-cell,
+.fc-day-header,
+.fc-col-header-cell-cushion {
+  /* เลือกส่วนหัวของวัน */
+  background-color: #1a2530;
+  color: #fff; /* ตั้งค่าสีข้อความเป็นสีขาว */
+  text-decoration: none; /* ลบขีดเส้นใต้ของข้อความ */
+}
 
+.fc-daygrid-day-number {
+  color: #1a2530;
+  text-decoration: none; /* ลบขีดเส้นใต้ของข้อความ */
+}
+
+.fc-event {
+  border: solid #fff;
+  padding: 2px;
+  border-radius: 25px;
+
+  background-clip: padding-box;
+}
 
 /* CSS สำหรับปรับขนาดตัวหนังสือของวันและวันที่ใน FullCalendar เมื่อหน้าจอเล็ก */
 
 @media (max-width: 768px) {
-  .fc-daygrid-day-number { /* เลือกตัวหนังสือของวันที่ */
+  .fc-daygrid-day-number {
+    /* เลือกตัวหนังสือของวันที่ */
     font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
   }
-  .fc-daygrid-day { /* เลือกตัวหนังสือของวัน */
+  .fc-daygrid-day {
+    /* เลือกตัวหนังสือของวัน */
     font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
   }
 
-  .fc-col-header-cell, .fc-day-header { /* เลือกส่วนหัวของวัน */
+  
+  .fc-col-header-cell,
+  .fc-day-header {
+    /* เลือกส่วนหัวของวัน */
     font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
-  }
+    text-decoration: none;
 
+  }
 }
 
 @media (max-width: 576px) {
+  .fc {
+    width: 100%; /* ปรับความกว้างของตารางให้เต็มขนาดจอเมื่อหน้าจอขนาดเล็ก */
+  }
   .fc-header-toolbar {
     flex-direction: column;
     padding: 20px;
-
   }
 
   .fc-header-toolbar .fc-left,
@@ -63,15 +98,10 @@
   .fc-header-toolbar .fc-right {
     width: 100%;
     margin-bottom: 10px;
-  
-
-
   }
 
- 
-
   .fc-day-header {
-        font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
+    font-size: 12px; /* ปรับขนาดตัวหนังสือลงเมื่อหน้าจอเล็ก */
 
     min-width: 40px;
   }
@@ -79,42 +109,28 @@
   .fc-list-heading td,
   .fc-list-heading thead th {
     text-align: center;
-
   }
 
   .fc-list-day-cushion,
   .fc-list-heading thead td,
   .fc-list-heading thead th {
     padding: 5px;
-    
   }
 
   .fc-scrollgrid {
-    
-    /* height: 100vh; */
+    height: 100vh;
   }
 }
-
-
-
-
-
-
-
 
 @media only screen and (max-width: 1280px) {
   .text {
     width: 39em;
   }
-
-
 }
 @media only screen and (max-width: 1040px) {
   .text {
     width: 28em;
   }
-
-
 }
 
 @media only screen and (max-width: 600px) {
@@ -125,7 +141,6 @@
     padding: 8px;
   }
 
-
   /* .dataTables_wrapper .rdt_TableCell{
     font-size:12px;
   } */
@@ -133,13 +148,11 @@
   .dataTables_wrapper .rdt_TableCell:nth-child(1) {
     display: none !important;
   }
- 
 
   .dataTables_wrapper .rdt_TableCol:nth-child(1) {
     display: none !important;
   }
 
-  
   .dataTables_wrapper .rdt_TableCol:nth-child(3) {
     display: none !important;
   }
@@ -152,19 +165,13 @@
   .dataTables_wrapper .rdt_TableCell:nth-child(4) {
     width: 2px;
   }
-
-
-
-
 }
-
 
 @media only screen and (max-width: 420px) {
   .text {
     width: 17.5em;
   }
 
-  
   .dataTables_wrapper .rdt_TableCol:nth-child(4) {
     width: 2px;
   }
@@ -174,16 +181,13 @@
   .dataTables_wrapper .rdt_TableCol:nth-child(3) {
     display: none;
   }
-
 }
-
 
 @media only screen and (max-width: 320px) {
   .text {
     width: 19em;
   }
 
-  
   .dataTables_wrapper .rdt_TableCol:nth-child(4) {
     width: 2px;
   }
@@ -193,44 +197,45 @@
   .dataTables_wrapper .rdt_TableCol:nth-child(3) {
     display: none;
   }
-
 }
-
 
 .gradient-custom {
   /* fallback for old browsers */
   background: #f6d365;
-  
+
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
-  
+  background: -webkit-linear-gradient(
+    to right bottom,
+    rgba(246, 211, 101, 1),
+    rgba(253, 160, 133, 1)
+  );
+
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
-  }
+  background: linear-gradient(
+    to right bottom,
+    rgba(246, 211, 101, 1),
+    rgba(253, 160, 133, 1)
+  );
+}
 
+.upload-container {
+  display: flex;
+  flex-direction: column;
 
+  height: 50vh;
+  align-items: center;
+  max-height: calc(
+    100vh - 240px
+  ); /* ปรับค่าตามความเหมาะสมของคุณ และตั้งค่าให้สูงเท่ากับความสูงของหน้าจอลบค่าของกล่องข้อความ */
+  overflow: auto; /* ตั้งค่า overflow เป็น auto เพื่อให้มีการแสดง scrollbar แต่เฉพาะเมื่อมีเนื้อหามากเกินไป */
+  transition: box-shadow 0.3s; /* เพิ่ม transition สำหรับการเปลี่ยนแปลง box-shadow */
+}
 
-  .upload-container {
-    display: flex;
-    flex-direction: column;
-    
-    height: 50vh;
-    align-items: center;
-    max-height: calc(100vh - 240px); /* ปรับค่าตามความเหมาะสมของคุณ และตั้งค่าให้สูงเท่ากับความสูงของหน้าจอลบค่าของกล่องข้อความ */
-    overflow: auto; /* ตั้งค่า overflow เป็น auto เพื่อให้มีการแสดง scrollbar แต่เฉพาะเมื่อมีเนื้อหามากเกินไป */
-    transition: box-shadow 0.3s; /* เพิ่ม transition สำหรับการเปลี่ยนแปลง box-shadow */
-    
-  }
-  
-  .upload-container:hover {
-    cursor: pointer; /* เพิ่ม cursor pointer เมื่อโฮเวอร์บนพื้นที่ Drag and Drop */
-    box-shadow: 0 0 10px rgba(33, 192, 206, 0.3); /* เพิ่ม box-shadow เมื่อโฮเวอร์บนพื้นที่ Drag and Drop */
-  }
-  
-  
-  .upload-button {
-    margin-top: 20px; /* ปรับขนาดของ margin ตามที่คุณต้องการ */
-  }
-  
-  
-  
+.upload-container:hover {
+  cursor: pointer; /* เพิ่ม cursor pointer เมื่อโฮเวอร์บนพื้นที่ Drag and Drop */
+  box-shadow: 0 0 10px rgba(33, 192, 206, 0.3); /* เพิ่ม box-shadow เมื่อโฮเวอร์บนพื้นที่ Drag and Drop */
+}
+
+.upload-button {
+  margin-top: 20px; /* ปรับขนาดของ margin ตามที่คุณต้องการ */
+}
