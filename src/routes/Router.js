@@ -36,10 +36,14 @@ const ThemeRoutes = [
     element: (
       <PrivateRoute>
         <FullLayout />
-
       </PrivateRoute>
     ),
     children: [
+      {
+        path: "/",
+        exact: true,
+        element: <PrivateRouteContent />,
+      },
       {
         path: "/dashboard",
         exact: true,

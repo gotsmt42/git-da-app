@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   Card,
   CardBody,
@@ -14,43 +16,43 @@ const FeedData = [
     title: "Cras justo odio",
     icon: "bi bi-bell",
     color: "primary",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
   {
     title: "New user registered.",
     icon: "bi bi-person",
     color: "info",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
   {
     title: "Server #1 overloaded.",
     icon: "bi bi-hdd",
     color: "danger",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
   {
     title: "New order received.",
     icon: "bi bi-bag-check",
     color: "success",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
   {
     title: "Cras justo odio",
     icon: "bi bi-bell",
     color: "dark",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
   {
     title: "Server #1 overloaded.",
     icon: "bi bi-hdd",
     color: "warning",
-    date: "6 minute ago",
+    date: "99 Year ago",
   },
 ];
 
 const Feeds = () => {
   return (
-    <Card>
+    <Card >
       <CardBody>
         <CardTitle tag="h5">Feeds</CardTitle>
         <CardSubtitle className="mb-2 text-muted" tag="h6">
@@ -61,8 +63,7 @@ const Feeds = () => {
             <ListGroupItem
               key={index}
               action
-              href="/"
-              tag="a"
+              tag={Link} to="/dashboard"
               className="d-flex align-items-center p-3 border-0"
             >
               <Button

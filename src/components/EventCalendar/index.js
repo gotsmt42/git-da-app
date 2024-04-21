@@ -19,7 +19,7 @@ function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [defaultAllDay, setdefaultAllDay] = useState(true); // สีข้อความเริ่มต้น
   const [defaultTextColor, setDefaultTextColor] = useState("#FFFFFF"); // สีข้อความเริ่มต้น
-  const [defaultBackgroundColor, setDefaultBackgroundColor] = useState("#FF638E"); // สีพื้นหลังเริ่มต้น
+  const [defaultBackgroundColor, setDefaultBackgroundColor] = useState("#0c49ac"); // สีพื้นหลังเริ่มต้น
   const [defaultFontSize, setDefaultFontSize] = useState(11); // สีพื้นหลังเริ่มต้น
 
   useEffect(() => {
@@ -593,6 +593,7 @@ function EventCalendar() {
             <div
               style={{
                 backgroundColor: eventInfo.event.backgroundColor,
+
                 color: eventInfo.event.textColor,
                 display: "flex",
                 justifyContent: "space-between",

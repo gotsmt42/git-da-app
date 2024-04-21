@@ -61,7 +61,7 @@ const Header = () => {
 
   return (
     <Navbar
-      style={{ backgroundColor: "#FF638E" }}
+
       dark
       expand="md"
       className="fix-header"
@@ -70,8 +70,8 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
 
         <NavbarBrand tag={Link} to="/dashboard">
-        <h2>Logo</h2>
-      </NavbarBrand>
+          <h2>Logo</h2>
+        </NavbarBrand>
 
         {/* <LogoWhite className=" d-lg-none" /> */}
 
