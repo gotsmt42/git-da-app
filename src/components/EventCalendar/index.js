@@ -197,7 +197,6 @@ function EventCalendar() {
     const eventAllDay = eventInfo.event.allDay;
 
     const htmlEdit = `
-    <label for="editTitle">Title : </label>
     <input id="editTitle" class="swal2-input" type="text" value="${eventTitle}" 
     style="margin-bottom: 1rem; width: 250px"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
     
@@ -502,33 +501,57 @@ function EventCalendar() {
 
   const handleLineNotify = () => {
     const html = `
-    <label for="title">เพิ่มคำอธิบาย : </label>
-    <input id="title" class="swal2-input"  type="text" value=""   placeholder="เพิ่มคำอธิบายสำหรับการอัพเดตนี้"
-    style="margin-bottom: 1rem; width: 350px"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
+    <label for="description">เพิ่มคำอธิบายสำหรับการอัพเดตนี้ : </label> <br>
+    <input id="description" class="swal2-input"  type="text"  placeholder="กรอกคำอธิบาย"
+    style="margin-bottom: 2rem width: auto"> <br /> 
     
-    <br>
-
+    
    
   `;
     try {
       Swal.fire({
-        title: "ส่งแจ้งเตือนการอัพเดต",
-        text: "ส่งแจ้งเตือนการอัพเดตตารางแผนงานไปที่ Line Notify",
+        title: "ส่งแจ้งเตือนการอัพเดตตารางแผนงานไปที่ Line Notify",
         icon: "question",
         html: html,
+        width: "475px",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Confirm",
+
+        preConfirm: () => {
+          const description = document.getElementById("description").value;
+
+          return {
+            description,
+          };
+        },
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await EventService.LineNotify();
+          const description  = result.value;
+
+
+        
+
+          console.log(description);
+          await EventService.LineNotify(description);
+
           Swal.fire({
             title: "ส่งแจ้งเตือน Line สำเร็จ!",
             icon: "success",
           });
         }
       });
+
+      // .then(async (result) => {
+      //   if (result.isConfirmed) {
+      //     await EventService.LineNotify();
+      //     Swal.fire({
+      //       title: "ส่งแจ้งเตือน Line สำเร็จ!",
+      //       icon: "success",
+      //     });
+      //   }
+      // });
     } catch (error) {
       console.error("Error deleting event:", error);
     }

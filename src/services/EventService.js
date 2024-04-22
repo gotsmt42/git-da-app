@@ -20,12 +20,12 @@ const EventService = {
   },
 
 
-  async LineNotify() {
+  async LineNotify(description) {
     
     try {
       const userData = await AuthService.getUserData(); // ดึงข้อมูลผู้ใช้และ Token
       if (userData) {
-        await API.get(`/events/linenotify`); 
+        await API.post(`/events/linenotify`, description); 
 
       }
     } catch (error) {
