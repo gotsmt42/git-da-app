@@ -19,7 +19,7 @@ const ExpandedFile = ({ data }) => (
             อัพโหลดโดย:{" "}
             <small className="text-body-secondary">
               {data.user.username},({data.user.fname} {data.user.lname}) ({" "}
-              {data.user.role}, {data.user.rank} )
+              ตำแหน่ง {data.user.role} )
             </small>
           </p>
 

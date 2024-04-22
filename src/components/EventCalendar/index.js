@@ -19,7 +19,8 @@ function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [defaultAllDay, setdefaultAllDay] = useState(true); // สีข้อความเริ่มต้น
   const [defaultTextColor, setDefaultTextColor] = useState("#FFFFFF"); // สีข้อความเริ่มต้น
-  const [defaultBackgroundColor, setDefaultBackgroundColor] = useState("#0c49ac"); // สีพื้นหลังเริ่มต้น
+  const [defaultBackgroundColor, setDefaultBackgroundColor] =
+    useState("#0c49ac"); // สีพื้นหลังเริ่มต้น
   const [defaultFontSize, setDefaultFontSize] = useState(11); // สีพื้นหลังเริ่มต้น
 
   useEffect(() => {
@@ -49,13 +50,13 @@ function EventCalendar() {
 
   const handleAddEvent = (arg) => {
     Swal.fire({
-      title: "Enter for your event:",
-      customClass: 'swal-wide',
+      title: "Enter for your event : ",
+      customClass: "swal-wide",
       html: `
 
       <label for="editTitle">Title : </label>
 
-      <input id="eventTitle" type="text" class="swal2-input" placeholder="Event Title"> <br><br>
+      <input id="eventTitle" type="text" class="swal2-input"  placeholder="Event Title"  style="margin-bottom: 1rem; width: 250px"> <br>
 
 
         <label for="fontSize">Font Size:</label><br>
@@ -192,15 +193,13 @@ function EventCalendar() {
 
     const eventStart = moment(eventInfo.event.start);
     const eventEnd = moment(eventInfo.event.end);
-    
 
     const eventAllDay = eventInfo.event.allDay;
-
 
     const htmlEdit = `
     <label for="editTitle">Title : </label>
     <input id="editTitle" class="swal2-input" type="text" value="${eventTitle}" 
-    style="margin-bottom: 1rem;"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
+    style="margin-bottom: 1rem; width: 250px"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
     
     <br>
 
@@ -255,9 +254,9 @@ function EventCalendar() {
   `;
 
     Swal.fire({
-      title: "Edit Event",
+      title: eventTitle,
       html: htmlEdit,
-      customClass: 'swal-wide',
+      customClass: "swal-wide",
       didOpen: () => {
         document
           .getElementById("backgroundColorPickerContainer")
@@ -305,9 +304,11 @@ function EventCalendar() {
 
         const isAllDay = document.getElementById("editAllDay").value === "true";
 
-        const start = moment(document.getElementById("editStart").value).toISOString();
+        const start = moment(
+          document.getElementById("editStart").value
+        ).toISOString();
         let end = document.getElementById("editEnd").value;
-        
+
         if (end === "null" || end === "") {
           // If end is null or empty, set end to original event end
           end = eventEnd.toISOString();
@@ -500,11 +501,21 @@ function EventCalendar() {
   };
 
   const handleLineNotify = () => {
+    const html = `
+    <label for="title">เพิ่มคำอธิบาย : </label>
+    <input id="title" class="swal2-input"  type="text" value=""   placeholder="เพิ่มคำอธิบายสำหรับการอัพเดตนี้"
+    style="margin-bottom: 1rem; width: 350px"><i id="copyEventDetails" title="Copied to clipboard!" class="fas fa-copy"></i>
+    
+    <br>
+
+   
+  `;
     try {
       Swal.fire({
         title: "ส่งแจ้งเตือนการอัพเดต",
         text: "ส่งแจ้งเตือนการอัพเดตตารางแผนงานไปที่ Line Notify",
         icon: "question",
+        html: html,
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
@@ -535,7 +546,6 @@ function EventCalendar() {
         <button className="btn btn-success" onClick={handleLineNotify}>
           <FontAwesomeIcon icon={faBell} /> ส่งแจ้งเตือนอัพเดตผ่าน LINE
         </button>
-
       </div>
       <FullCalendar
         timeZone="local"
@@ -575,7 +585,7 @@ function EventCalendar() {
                   alignItems: "center",
                   // marginLeft: "5px",
                   // marginRight: "5px",
-          
+
                   // marginBottom: "3px",
                   fontSize: "11px",
                   fontWeight: "bold",
@@ -583,7 +593,6 @@ function EventCalendar() {
                   overflow: "hidden",
                   whiteSpace: "nowrap",
                   margin: "auto",
-                  
                 }}
               >
                 {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
@@ -600,7 +609,6 @@ function EventCalendar() {
                 alignItems: "center",
                 border: "3px solid",
                 borderRadius: "20px",
-     
               }}
             >
               <span
@@ -636,7 +644,6 @@ function EventCalendar() {
             </div>
           </div>
         )}
-        
         eventClick={handleEditEvent}
         headerToolbar={{
           left: "prev,next today",

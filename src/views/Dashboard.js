@@ -67,7 +67,7 @@ const Dashboard = () => {
       </Row>
       {/***Table ***/}
       <Row>
-        <Col lg="12">
+        <Col lg="12" style={{ marginTop: "2rem" }}>
           <ProjectTables />
         </Col>
       </Row>
