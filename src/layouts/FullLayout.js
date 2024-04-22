@@ -33,7 +33,7 @@ const FullLayout = () => {
       {/* Header */}
       <div >
 
-        <div  className="header-fixed">
+        <div className="header-fixed">
         <Header />
         </div>
       

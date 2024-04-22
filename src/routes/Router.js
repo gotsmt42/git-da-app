@@ -36,10 +36,14 @@ const ThemeRoutes = [
     element: (
       <PrivateRoute>
         <FullLayout />
-
       </PrivateRoute>
     ),
     children: [
+      {
+        path: "/",
+        exact: true,
+        element: <PrivateRouteContent />,
+      },
       {
         path: "/dashboard",
         exact: true,
@@ -78,7 +82,7 @@ const ThemeRoutes = [
     ],
   },
   { path: "/login", element: <Login />, title: "Login" },
-  { path: "/register", element: <Register />, title: "Register" },
+  // { path: "/register", element: <Register />, title: "Register" },
 ];
 
 export default ThemeRoutes;

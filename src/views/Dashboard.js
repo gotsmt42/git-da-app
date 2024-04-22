@@ -1,7 +1,9 @@
 import { Col, Row } from "reactstrap";
+
+import Event from "../views/ui/EventCalendar"
 // import SalesChart from "../components/dashboard/SalesChart";
-// import Feeds from "../components/dashboard/Feeds";
-// import ProjectTables from "../components/dashboard/ProjectTable";
+import Feeds from "../components/dashboard/Feeds";
+import ProjectTables from "../components/dashboard/ProjectTable";
 
 // import Blog from "../components/dashboard/Blog";
 // import bg1 from "../assets/images/bg/bg1.jpg";
@@ -52,23 +54,25 @@ const Dashboard = () => {
     <div>
       {/***Top Cards***/}
 
-      <h1>Dashboard Page Comming Soon...</h1>
+      {/* <h1>Dashboard Page Comming Soon...</h1> */}
 
       {/***Sales & Feed***/}
       <Row>
         <Col sm="6" lg="6" xl="7" xxl="8">
-          {/* <SalesChart /> */}
+          <Event />
         </Col>
-        <Col sm="6" lg="6" xl="5" xxl="4">
-          {/* <Feeds /> */}
+        <Col sm="6" lg="6" xl="5" xxl="4" style={{ marginTop: "2rem" }}>
+          <Feeds />
         </Col>
       </Row>
       {/***Table ***/}
       <Row>
         <Col lg="12">
-          {/* <ProjectTables /> */}
+          <ProjectTables />
         </Col>
       </Row>
+
+
       {/***Blog Cards***/}
       <Row>
         {/* {BlogData.map((blg, index) => (
