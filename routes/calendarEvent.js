@@ -8,16 +8,20 @@ const axios = require("axios");
 
 const verifyToken = require("../middleware/auth");
 
-router.get("/linenotify", verifyToken, async (req, res) => {
+router.post("/linenotify", verifyToken, async (req, res) => {
   try {
+    let { description } = req.body;
+
     let message = "\n📢📢 มีการแจ้งเตือนอัพเดตตารางแผนงานใหม่ 😊\n";
 
-    await sendLineNotification(`\n${message}`);
+    await sendLineNotification(`\n${message}\nคำอธิบาย: ${description}\n`);
 
     // ส่งข้อความผ่าน Line Notify
     async function sendLineNotification(message) {
       const url_line_notification = `${process.env.APP_URL_LINE_NOTIFY}`;
       const footer = `\nข้อความนี้ถูกส่งโดยระบบแจ้งเตือนการอัพเดตแผนงานสำหรับข้อมูลเพิ่มเติมคลิ๊กที่นี่: ${process.env.APP_API_URL}/event`;
+
+
 
       // เพิ่ม footer ในข้อความ
       message += footer;
@@ -119,8 +123,16 @@ router.get("/", verifyToken, async (req, res) => {
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const id = req.params.id;
-    const { title, date, backgroundColor, textColor, fontSize, start, end, allDay } =
-      req.body;
+    const {
+      title,
+      date,
+      backgroundColor,
+      textColor,
+      fontSize,
+      start,
+      end,
+      allDay,
+    } = req.body;
 
     console.log(id);
     console.log(req.body);
@@ -133,7 +145,7 @@ router.put("/:id", verifyToken, async (req, res) => {
       fontSize,
       start,
       end,
-      allDay
+      allDay,
     };
 
     const updatedEvent = await CalendarEvent.findOneAndUpdate(
