@@ -13,6 +13,24 @@ const upload = multer({ dest: "asset/uploads/images/" });
 
 const checkFile = require("../middleware/checkFile");
 
+router.get("/alluser", verifyToken, async (req, res) => {
+  try {
+    const token = req.token;
+
+    const allUser = await User.find({}).exec();
+
+    if (allUser) {
+      res.json({ allUser: allUser, token: token });
+    } else {
+      res.json({
+        err: "Username หรือ Password ไม่ถูกต้องกรุณาลองใหม่อีกครั้ง",
+      });
+    }
+    // console.log(user);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 router.get("/user", verifyToken, async (req, res) => {
   try {
     const userId = req.userId;
@@ -38,8 +56,12 @@ router.post("/signup", async (req, res) => {
   try {
     const { username, password, email, fname, lname, tel } = req.body;
     const existingUser = await User.findOne({ username });
+    const existingEmail = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).send("Username already exists");
+      return res.status(400).json({err: "Username already exists"});
+    }
+    if (existingEmail) {
+      return res.status(400).json({err: "Email already exists"});
     }
     const user = new User({ username, password, email, fname, lname, tel });
     await user.save();
