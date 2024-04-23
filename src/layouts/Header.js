@@ -29,8 +29,17 @@ const Header = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const getUser = await AuthService.getUserData();
+        setUser(getUser.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     getUserData();
-  }, [1000]);
+  }, []); 
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,11 +53,6 @@ const Header = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
 
-  const getUserData = async () => {
-    const getUser = await AuthService.getUserData();
-    setUser(getUser.user);
-  };
-
   const handleLogout = async () => {
     await swalLogout().then((result) => {
       if (result.isConfirmed) {
@@ -60,12 +64,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar
-
-      dark
-      expand="md"
-      className="fix-header"
-    >
+    <Navbar dark expand="md" className="fix-header">
       <div className="d-flex align-items-center">
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
 

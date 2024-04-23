@@ -528,10 +528,7 @@ function EventCalendar() {
         },
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const description  = result.value;
-
-
-        
+          const description = result.value;
 
           console.log(description);
           await EventService.LineNotify(description);
@@ -600,27 +597,30 @@ function EventCalendar() {
         eventContent={(eventInfo) => (
           <div>
             {eventInfo.event.allDay === false ? (
-              <span
+              <div
                 style={{
-                  // color: "#DC3741",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  // marginLeft: "5px",
-                  // marginRight: "5px",
-
-                  // marginBottom: "3px",
-                  fontSize: "11px",
-                  fontWeight: "bold",
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  margin: "auto",
                 }}
               >
-                {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
-                {moment(eventInfo.event.endStr).format("HH:mm")}
-              </span>
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    margin: "auto",
+                    padding: "2px",
+                    fontSize: "11px"
+                  }}
+                >
+                  {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
+                  {moment(eventInfo.event.endStr).format("HH:mm")}
+                </span>
+              </div>
             ) : null}
             <div
               style={{

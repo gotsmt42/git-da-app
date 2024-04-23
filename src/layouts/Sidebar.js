@@ -53,18 +53,30 @@ const navigation = [
 ];
 
 const Sidebar = () => {
-  const [user, setUser] = useState({});
   const [collapsedMenu, setCollapsedMenu] = useState({});
   const location = useLocation();
 
+  const [user, setUser] = useState({});
   useEffect(() => {
-    getUserData();
-  }, [1000]);
+    const getUserData = async () => {
+      try {
+        const getUser = await AuthService.getUserData();
+        setUser(getUser.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
-  const getUserData = async () => {
-    const getUser = await AuthService.getUserData();
-    setUser(getUser.user);
-  };
+    getUserData();
+  
+
+
+  }, []); // เมื่อ user เปลี่ยนแปลงให้เรียกใช้ useEffect ใหม่
+
+  // const getUserData = async () => {
+  //   const getUser = await AuthService.getUserData();
+  //   setUser(getUser.user);
+  // };
 
   const toggleNavbar = (index) => {
     setCollapsedMenu({
@@ -80,7 +92,7 @@ const Sidebar = () => {
         style={{ background: `url(${probg}) no-repeat` }}
       >
         <div className="p-3 d-flex">
-          <Link to={'/account'}>
+          <Link to={"/account"}>
             <img
               src={`${API.defaults.baseURL}/${user.imageUrl}`}
               alt="user"

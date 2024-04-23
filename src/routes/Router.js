@@ -82,7 +82,7 @@ const ThemeRoutes = [
     ],
   },
   { path: "/login", element: <Login />, title: "Login" },
-  // { path: "/register", element: <Register />, title: "Register" },
+  { path: "/register", element: <Register />, title: "Register" },
 ];
 
 export default ThemeRoutes;

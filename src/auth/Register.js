@@ -103,7 +103,7 @@ const Register = () => {
         Swal.fire({
           icon: "error",
           title: "Registration failed",
-          text: error.response.data.message
+          text: error.response.data.err
         });
         
       }
@@ -173,7 +173,7 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <label>Username / Email</label>
+                    <label>Username</label>
                     <input
                       type="text"
                       className="form-control"

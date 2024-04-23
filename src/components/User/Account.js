@@ -50,10 +50,11 @@ const Account = () => {
       }
       const updatedUser = await AuthService.UpdateUser(userId, formData);
       setUser(updatedUser); // อัพเดทข้อมูลผู้ใช้
-  
+      
       setModalOpenEdit(false);
       setSelectedFile(null);
       Swal.fire("Updated Success!", "", "success");
+
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -64,7 +65,6 @@ const Account = () => {
     setModalOpenEdit(false);
   };
 
-  console.log("UserData", user);
 
   return (
     <section className="vh-100" style={{ backgroundColor: "#f4f5f7" }}>
@@ -84,12 +84,13 @@ const Account = () => {
                     src={`${API.defaults.baseURL}/${user.imageUrl}`}
                     alt="Avatar"
                     className="img-fluid my-5 rounded-circle"
-                    style={{ width: "80px", height: "80px" }}
+                    style={{ width: "120px", height:"120px"}}
                   />
-                  <h5>
-                    {user.fname} {user.lname}
-                  </h5>
-                  <p>{user.rank}</p>
+                  <p>
+                    <b>{user.fname} {user.lname}</b>
+                  </p>
+                  <p>สถานะ: {user.role}</p>
+                  <p>ตำแหน่ง: {user.rank}</p>
                   <Link
                     onClick={() => {
                       setEditedData(user);

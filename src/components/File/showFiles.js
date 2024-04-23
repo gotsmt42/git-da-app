@@ -323,7 +323,7 @@ const ShowFiles = () => {
                         return (
                           <option key={idx} value={username}>
                             {username}, ({userFile.user.fname}{" "}
-                            {userFile.user.lname}), (ตำแหน่ง {userFile.user.role})
+                            {userFile.user.lname}), (สถานะ: {userFile.user.role})
                           </option>
                         );
                       })}

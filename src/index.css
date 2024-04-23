@@ -10,8 +10,10 @@
 
 
 .swal-wide {
-  width:850px !important;
-  font-size: 13px !important;
+  width:650px !important;
+  font-size: 12px !important;
+
+  padding-bottom: 2rem;
 }
 
 .swal2-title {
@@ -72,7 +74,7 @@
 
 .fc-event {
   border: solid #fff;
-  padding: 2px;
+  padding: 5px;
   border-radius: 25px;
 
   background-clip: padding-box;

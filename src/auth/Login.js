@@ -74,8 +74,8 @@ const Login = () => {
           <div className="col-md-offset-10 col-md-10 col-sm-offset-10 col-sm-12">
             <div className="form-container">
               <div className="left-content">
-                <h3 className="title">Site Name</h3>
-                <h4 className="sub-title">Lorem ipsum dolor sit amet.</h4>
+                <h2 className="title">Da App</h2>
+                <h4 className="sub-title">ระบบบริหารการจัดการส่วนต่างๆของหลังบ้าน</h4>
               </div>
               <div className="right-content">
                 <h3 className="form-title">Login</h3>
@@ -107,8 +107,8 @@ const Login = () => {
                   </div>
                   <Link className="forgot">Forgot Password</Link>
                 </form>
-                <span className="separator">OR</span>
-                <ul className="social-links">
+                {/* <span className="separator">OR</span> */}
+                {/* <ul className="social-links">
                   <li>
                     <Button variant="danger">
                       <Google /> Login with Google
@@ -119,11 +119,11 @@ const Login = () => {
                       <Facebook /> Login with Facebook
                     </Button>
                   </li>
-                </ul>
-                {/* <span className="signup-link">
+                </ul> */}
+                <span className="signup-link">
                   Don't have an account? Sign up{" "}
                   <Link to={"/register"}>here</Link>
-                </span> */}
+                </span>
               </div>
             </div>
           </div>
