@@ -4,9 +4,29 @@
 
 
 
+/* กำหนด animation สำหรับเมื่อ Header เปลี่ยนเป็น fixed */
+@keyframes fadeInDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* กำหนด animation สำหรับเมื่อ Header เปลี่ยนเป็นปกติ */
+@keyframes fadeOutUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
 
 .header {
   box-shadow: 100px 75px 50px 0px #FF638E inset;
+  transition: transform 0.3s ease;
 
   }
   .stickyHeader {
@@ -15,9 +35,9 @@
     left: 0;
     width: 100%;
     z-index: 1000;
-    /* เพิ่มสีพื้นหลัง, ขอบ, หรือสไตล์อื่น ๆ ตามต้องการ */
+    animation: fadeInDown 0.3s ease forwards;
+    /* สามารถเพิ่มสีพื้นหลัง, ขอบ, หรือสไตล์อื่น ๆ ตามต้องการ */
   }
-  
 
 
 
