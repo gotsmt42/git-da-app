@@ -9,6 +9,7 @@ import { Container } from "reactstrap";
 const FullLayout = () => {
   const sidebarRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false); // State เพื่อติดตามสถานะโหมด mobile
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
 
@@ -47,10 +48,28 @@ const FullLayout = () => {
     closeSidebar(); // เมื่อคลิกที่เมนูให้ปิด Slidebar
   };
 
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll); // เพิ่ม event listener สำหรับ scroll
+  
+    return () => {
+      window.removeEventListener("scroll", handleScroll); // ถอด event listener เมื่อ component ถูก unmount
+    };
+  }, []); // ให้ useEffect ทำงานเมื่อ component โหลดครั้งแรกเท่านั้น
+  
+  // ใช้ตรวจสอบค่า isScrolled และใส่คลาส CSS ตามที่ต้องการใน Header
+  const headerClass = isScrolled ? "stickyHeader" : "";
+
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    setIsScrolled(offset > 0); // ตรวจสอบว่ามีการเลื่อนหน้าจอไหม
+  };
+  
+
   return (
     <main>
       {/* Header */}
-      <div className="header-fixed">
+      <div className={`header ${headerClass}`}>
         <Header />
       </div>
       
@@ -59,7 +78,7 @@ const FullLayout = () => {
         <aside className={`sidebarArea shadow ${isMobile ? "" : "showSidebar"}`} id="sidebarArea" ref={sidebarRef}>
           <Sidebar handleMenuClick={handleMenuClick} />
         </aside>
-
+  
         {/* Content Area */}
         <div className="contentArea" onClick={isMobile ? closeSidebar : null}>
           {/* Middle Content */}

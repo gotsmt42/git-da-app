@@ -5,10 +5,20 @@
 
 
 
-.header-fixed {
+.header {
   box-shadow: 100px 75px 50px 0px #FF638E inset;
 
-}
+  }
+  .stickyHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* เพิ่มสีพื้นหลัง, ขอบ, หรือสไตล์อื่น ๆ ตามต้องการ */
+  }
+  
+
 
 
 
