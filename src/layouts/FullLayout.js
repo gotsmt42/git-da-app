@@ -11,18 +11,31 @@ const FullLayout = () => {
   const [isMobile, setIsMobile] = useState(false); // State เพื่อติดตามสถานะโหมด mobile
 
   useEffect(() => {
+
+    const handleOutsideClick = (e) => {
+      // ตรวจสอบว่าคลิกอยู่นอกเหนือจาก contentArea
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        closeSidebar();
+      }
+    };
+
+
     const checkIsMobile = () => {
       const screenWidth = window.innerWidth;
       setIsMobile(screenWidth <= 768); // ตั้งค่าให้เป็น mobile เมื่อหน้าจอน้อยกว่าหรือเท่ากับ 768px
     };
-
     checkIsMobile(); // เรียกฟังก์ชันเมื่อโหลดหน้าเว็บ
-    window.addEventListener("resize", checkIsMobile); // เพิ่ม event listener เมื่อ resize หน้าจอ
 
-    return () => {
-      window.removeEventListener("resize", checkIsMobile); // ถอด event listener เมื่อ component ถูก unmount
-    };
+   // เพิ่ม event listener เมื่อ component ถูก mount
+   document.addEventListener("mousedown", handleOutsideClick);
+
+   // ถอด event listener เมื่อ component ถูก unmount
+   return () => {
+     document.removeEventListener("mousedown", handleOutsideClick);
+   };
   }, []);
+
+  
 
   const closeSidebar = () => {
     if (isMobile) {

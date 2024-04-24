@@ -25,8 +25,9 @@ import API from "../API/axiosInstance";
 
 const Header = () => {
   const { logout } = useAuth();
-
   const [user, setUser] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -37,27 +38,32 @@ const Header = () => {
         console.error("Error fetching user data:", error);
       }
     };
-
     getUserData();
-  }, []); 
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  }, []);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
-  const Handletoggle = () => {
-    setIsOpen(!isOpen);
-  };
+  const Handletoggle = () => setIsOpen(!isOpen);
   const showMobilemenu = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
+
+  const handleClickOutside = (e) => {
+    if (!e.target.closest(".navbar")) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await swalLogout().then((result) => {
       if (result.isConfirmed) {
         logout();
-
         Swal.fire("Logout Success!", "", "success");
       }
     });
@@ -72,11 +78,9 @@ const Header = () => {
           <h2>Logo</h2>
         </NavbarBrand>
 
-        {/* <LogoWhite className=" d-lg-none" /> */}
-
         <Button
           style={{ backgroundColor: "#FF638E" }}
-          className=" d-lg-none"
+          className="d-lg-none"
           onClick={() => showMobilemenu()}
         >
           <i className="bi bi-list"></i>
@@ -89,11 +93,7 @@ const Header = () => {
           className="d-sm-block d-md-none"
           onClick={Handletoggle}
         >
-          {isOpen ? (
-            <i className="bi bi-x"></i>
-          ) : (
-            <i className="bi bi-three-dots-vertical"></i>
-          )}
+          {isOpen ? <i className="bi bi-x"></i> : <i className="bi bi-three-dots-vertical"></i>}
         </Button>
       </div>
 
@@ -120,10 +120,10 @@ const Header = () => {
             </DropdownToggle>
             <DropdownMenu end>
               <Link to="/files" style={{ textDecoration: "none" }}>
-                <DropdownItem>Files </DropdownItem>
+                <DropdownItem>Files</DropdownItem>
               </Link>
               <Link to="/product" style={{ textDecoration: "none" }}>
-                <DropdownItem>Product </DropdownItem>
+                <DropdownItem>Product</DropdownItem>
               </Link>
               <DropdownItem divider />
               <Link to="/dashboard" style={{ textDecoration: "none" }}>
@@ -148,7 +148,6 @@ const Header = () => {
             <Link to={"/account"} style={{ textDecoration: "none" }}>
               <DropdownItem>My Account</DropdownItem>
             </Link>
-
             <DropdownItem divider />
             <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
           </DropdownMenu>
@@ -159,3 +158,5 @@ const Header = () => {
 };
 
 export default Header;
+
+
