@@ -287,7 +287,7 @@ const ShowFiles = () => {
           downloadFile,
         })}
         data={sortedData}
-        
+
         fixedHeaderScrollHeight="625px"
         
         paginationPerPage={5}
@@ -365,16 +365,7 @@ const ShowFiles = () => {
         ]}
       />
       {/* Loader */}
-      {loading && (
-        <div
-          className="modal fade show"
-          id="loadingModal"
-          aria-labelledby="loadingModalLabel"
-          aria-modal="true"
-          role="dialog"
-          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-          tabIndex="-1"
-        >
+ 
           {loading && (
             <div className="loading-overlay">
               <ThreeDots
@@ -385,8 +376,7 @@ const ShowFiles = () => {
               />
             </div>
           )}
-        </div>
-      )}
+  
     </>
   );
 };

@@ -3,7 +3,7 @@ import moment from "moment"; // Import moment library for date formatting
 const customCell = ({ row, isSmallScreen }) => {
   return (
     <div key="cell-product">
-      {/* แสดงชื่อผลิตภัณฑ์ */}
+      {/* แสดงชื่อผลิตภัณฑ์ */} 
       <div style={{ fontWeight: "bold" }}>{row.name}</div>
       {/* หากหน้าจอขนาดเล็ก ให้แสดง updatedAt ด้านล่าง */}
       {isSmallScreen && (

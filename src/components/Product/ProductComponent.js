@@ -22,6 +22,7 @@ import EditModal from "../Modal/products/EditModal";
 import ExpandedProduct from "./ExpandedProduct";
 
 import moment from "moment"; // Import moment library for date formatting
+import { ThreeDots } from "react-loader-spinner";
 
 const ProductComponent = () => {
   const [user, setUser] = useState([]);
@@ -47,6 +48,8 @@ const ProductComponent = () => {
   const [modalOpenInsert, setModalOpenInsert] = useState(false);
   const [modalOpenEdit, setModalOpenEdit] = useState(false);
   const [editedData, setEditedData] = useState({});
+
+
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -110,7 +113,6 @@ const ProductComponent = () => {
       setDateSearch("");
       setRows([]);
       setLoading(false);
-
     } catch (error) {
       console.error("Error fetching products:", error);
       setLoading(false);
@@ -350,6 +352,12 @@ const ProductComponent = () => {
           </IconButton>,
         ]}
       />
+
+      {loading && (
+        <div className="loading-overlay">
+          <ThreeDots type="ThreeDots" color="#007bff" height={50} width={50} />
+        </div>
+      )}
 
       <InsertModal
         show={modalOpenInsert}

@@ -351,6 +351,8 @@ function EventCalendar() {
       },
     }).then(async (result) => {
       if (result.isConfirmed) {
+        setLoading(true); // เริ่มต้นโหลดข้อมูล
+
         const {
           id,
           title,
@@ -377,6 +379,9 @@ function EventCalendar() {
         setEvents(updatedEvents);
 
         fetchEventsFromDB();
+
+
+        setLoading(false); // เริ่มต้นโหลดข้อมูล
 
         Swal.fire({
           title: "Updated Successfully",
@@ -480,7 +485,6 @@ function EventCalendar() {
   };
 
   const handleDeleteEvent = (id) => {
-    setLoading(true); // เริ่มต้นโหลดข้อมูล
 
     try {
       Swal.fire({
@@ -493,6 +497,8 @@ function EventCalendar() {
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true); // เริ่มต้นโหลดข้อมูล
+
           // Send DELETE request to server with event ID
           await EventService.DeleteEvent(id);
           // Update events state after deletion

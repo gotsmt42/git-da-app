@@ -98,6 +98,8 @@ const DataTableColumns = ({
       name: "Product Name",
       cell: (row) => <CustomCell row={row} isSmallScreen={isSmallScreen} />,
       sortable: true,
+      selector: (row) => row.name,
+
     },
 
     {

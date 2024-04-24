@@ -23,11 +23,11 @@ const Loader = () => {
   return (
     <div>
       {/* แสดง Loader เมื่อ loading เป็น true */}
-      {loading && (
+      {/* {loading && (
         <div className="loading-overlay">
           <ThreeDots type="ThreeDots" color="#007bff" height={50} width={50} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
