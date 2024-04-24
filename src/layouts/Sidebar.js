@@ -52,7 +52,8 @@ const navigation = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({handleMenuClick}) => {
+  
   const [collapsedMenu, setCollapsedMenu] = useState({});
   const location = useLocation();
 
@@ -138,6 +139,8 @@ const Sidebar = () => {
                         }`}
                         to={item.href} // นี่คือส่วนที่ให้ลิงก์ไปยังหน้าต่าง ๆ
                         style={{ textDecoration: "none" }}
+                        onClick={handleMenuClick} // เรียกใช้ handleMenuClick เมื่อคลิกที่ลิงก์
+
                       >
                         {item.icon && <item.icon />}{" "}
                         {/* Render icon component */}
@@ -152,6 +155,9 @@ const Sidebar = () => {
                   className={`nav-link py-3 ${
                     location.pathname === navi.href ? "active" : ""
                   }`}
+
+                  onClick={handleMenuClick} // เรียกใช้ handleMenuClick เมื่อคลิกที่ลิงก์
+
                 >
                   <i className={`bi ${navi.icon}`}></i>
                   <span className="ms-2">{navi.title}</span>

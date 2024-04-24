@@ -1,56 +1,58 @@
+// FullLayout.js
+
+import React, { useRef, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Container } from "reactstrap";
-import { useRef, useEffect } from "react";
 
 const FullLayout = () => {
   const sidebarRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false); // State เพื่อติดตามสถานะโหมด mobile
 
   useEffect(() => {
-    const handleOutsideClick = (e) => {
-      // ตรวจสอบว่าคลิกอยู่นอกเหนือจาก contentArea
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-        closeSidebar();
-      }
+    const checkIsMobile = () => {
+      const screenWidth = window.innerWidth;
+      setIsMobile(screenWidth <= 768); // ตั้งค่าให้เป็น mobile เมื่อหน้าจอน้อยกว่าหรือเท่ากับ 768px
     };
 
-    // เพิ่ม event listener เมื่อ component ถูก mount
-    document.addEventListener("mousedown", handleOutsideClick);
+    checkIsMobile(); // เรียกฟังก์ชันเมื่อโหลดหน้าเว็บ
+    window.addEventListener("resize", checkIsMobile); // เพิ่ม event listener เมื่อ resize หน้าจอ
 
-    // ถอด event listener เมื่อ component ถูก unmount
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      window.removeEventListener("resize", checkIsMobile); // ถอด event listener เมื่อ component ถูก unmount
     };
   }, []);
 
   const closeSidebar = () => {
-    document.getElementById("sidebarArea").classList.remove("showSidebar");
+    if (isMobile) {
+      document.getElementById("sidebarArea").classList.remove("showSidebar");
+    }
+  };
+
+  const handleMenuClick = () => {
+    closeSidebar(); // เมื่อคลิกที่เมนูให้ปิด Slidebar
   };
 
   return (
     <main>
       {/* Header */}
-      <div >
-
-        <div className="header-fixed">
+      <div className="header-fixed">
         <Header />
-        </div>
+      </div>
       
+      <div className="pageWrapper d-lg-flex">
+        {/* Sidebar */}
+        <aside className={`sidebarArea shadow ${isMobile ? "" : "showSidebar"}`} id="sidebarArea" ref={sidebarRef}>
+          <Sidebar handleMenuClick={handleMenuClick} />
+        </aside>
 
-        <div className="pageWrapper d-lg-flex">
-          {/* Sidebar */}
-          <aside className="sidebarArea shadow" id="sidebarArea" ref={sidebarRef}>
-            <Sidebar />
-          </aside>
-
-          {/* Content Area */}
-          <div className="contentArea" onClick={closeSidebar}>
-            {/* Middle Content */}
-            <Container className="p-4" fluid>
-              <Outlet />
-            </Container>
-          </div>
+        {/* Content Area */}
+        <div className="contentArea" onClick={isMobile ? closeSidebar : null}>
+          {/* Middle Content */}
+          <Container className="p-4" fluid>
+            <Outlet />
+          </Container>
         </div>
       </div>
     </main>
