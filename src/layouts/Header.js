@@ -75,14 +75,17 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
 
         <NavbarBrand tag={Link} to="/dashboard">
-        <div class="gradiant-bg">
-
-          <h2>Logo App</h2>
+          <div class="gradiant-bg">
+            <h2>Logo App</h2>
           </div>
         </NavbarBrand>
 
         <Button
-          style={{ backgroundColor: "#0c49ac",  border:"none" }}
+          style={{
+            backgroundColor: "transparent", // กำหนดให้พื้นหลังเป็นโปร่งใส
+
+            border: "none",
+          }}
           className="d-lg-none"
           onClick={() => showMobilemenu()}
         >
@@ -91,12 +94,20 @@ const Header = () => {
       </div>
       <div className="hstack gap-2">
         <Button
-          style={{ backgroundColor: "#0c49ac", border:"none" }}
+          style={{
+            backgroundColor: "transparent", // กำหนดให้พื้นหลังเป็นโปร่งใส
+
+            border: "none",
+          }}
           size="sm"
           className="d-sm-block d-md-none"
           onClick={Handletoggle}
         >
-          {isOpen ? <i className="bi bi-x"></i> : <i className="bi bi-three-dots-vertical"></i>}
+          {isOpen ? (
+            <i className="bi bi-x"></i>
+          ) : (
+            <i className="bi bi-three-dots-vertical"></i>
+          )}
         </Button>
       </div>
 
@@ -161,5 +172,3 @@ const Header = () => {
 };
 
 export default Header;
-
-

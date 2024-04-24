@@ -27,7 +27,7 @@
 .header {
   background: linear-gradient( 45deg, #0c49ac, #4c81d7, #8ca3f0, #aed9e0, #adb4c4);
 
-  background-color: #0c49ac ;
+  /* background-color: #0c49ac ; */
   transition: transform 0.3s ease;
   z-index: 9999;
 
