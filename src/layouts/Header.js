@@ -75,11 +75,14 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
 
         <NavbarBrand tag={Link} to="/dashboard">
-          <h2>Logo</h2>
+        <div class="gradiant-bg">
+
+          <h2>Logo App</h2>
+          </div>
         </NavbarBrand>
 
         <Button
-          style={{ backgroundColor: "#FF638E" }}
+          style={{ backgroundColor: "#0c49ac",  border:"none" }}
           className="d-lg-none"
           onClick={() => showMobilemenu()}
         >
@@ -88,7 +91,7 @@ const Header = () => {
       </div>
       <div className="hstack gap-2">
         <Button
-          style={{ backgroundColor: "#FF638E" }}
+          style={{ backgroundColor: "#0c49ac", border:"none" }}
           size="sm"
           className="d-sm-block d-md-none"
           onClick={Handletoggle}
