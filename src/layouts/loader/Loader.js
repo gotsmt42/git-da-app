@@ -1,47 +1,35 @@
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { useState, useEffect } from "react";
+import { ThreeDots } from "react-loader-spinner";
 
-const rotate360 = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
+const Loader = () => {
+  const [loading, setLoading] = useState(true); // เริ่มต้นโหลดเมื่อโหลดหน้าใหม่
 
-const Spinner = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: ${rotate360} 1s linear infinite;
-  border-top: 2px solid grey;
-  border-right: 2px solid grey;
-  border-bottom: 2px solid grey;
-  border-left: 4px solid black;
-  background: transparent;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-`;
+  // useEffect สำหรับจัดการการโหลดเมื่อโหลดหน้าใหม่
+  useEffect(() => {
+    // ฟังก์ชันสำหรับจำลองการโหลดข้อมูล
+    const simulateLoading = () => {
+      // จำลองการโหลดข้อมูลในระยะเวลา 3 วินาที (ใช้ setTimeout)
+      setTimeout(() => {
+        setLoading(false); // เมื่อโหลดเสร็จสมบูรณ์
+      }, 3000); // จำลองเวลาโหลด 3 วินาที
+    };
 
-const Loader = () => (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(255, 255, 255, 0.8)", // สีพื้นหลังที่ใส่เฉพาะส่วน Loader
-    }}
-  >
-    <Spinner />
-  </div>
-);
+    // เรียกใช้ฟังก์ชันจำลองการโหลดข้อมูล
+    simulateLoading();
+
+    // อย่าลืมกำหนด dependency array ว่าง [] เพื่อให้ useEffect ทำงานเพียงครั้งเดียวเมื่อโหลดหน้าใหม่
+  }, []); // ใช้ dependency array ว่าง [] เพื่อให้ useEffect ทำงานเพียงครั้งเดียวเมื่อโหลดหน้าใหม่
+
+  return (
+    <div>
+      {/* แสดง Loader เมื่อ loading เป็น true */}
+      {loading && (
+        <div className="loading-overlay">
+          <ThreeDots type="ThreeDots" color="#007bff" height={50} width={50} />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Loader;

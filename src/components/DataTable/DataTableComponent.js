@@ -112,7 +112,7 @@ const DataTableComponent = ({
       onSelectedRowsChange={onSelectedRowsChange}
       clearSelectedRows={clearSelectedRows}
       striped
-      responsive
+      responsive={responsive}
       customStyles={customStyles}
       contextActions={contextActions}
       subHeader

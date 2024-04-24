@@ -15,6 +15,10 @@ import { faBell } from "@fortawesome/free-solid-svg-icons"; // Import ไอค�
 import EventService from "../../services/EventService";
 import moment from "moment";
 
+
+import { ThreeDots } from "react-loader-spinner";
+
+
 function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [defaultAllDay, setdefaultAllDay] = useState(true); // สีข้อความเริ่มต้น
@@ -22,6 +26,9 @@ function EventCalendar() {
   const [defaultBackgroundColor, setDefaultBackgroundColor] =
     useState("#0c49ac"); // สีพื้นหลังเริ่มต้น
   const [defaultFontSize, setDefaultFontSize] = useState(11); // สีพื้นหลังเริ่มต้น
+
+  const [loading, setLoading] = useState(false); // เพิ่มสถานะการโหลด
+
 
   useEffect(() => {
     fetchEventsFromDB(); // Fetch events when component mounts
@@ -36,6 +43,8 @@ function EventCalendar() {
   };
 
   const fetchEventsFromDB = async () => {
+    setLoading(true);
+
     try {
       const res = await EventService.getEvents();
       const eventsWithId = res.userEvents.map((event) => ({
@@ -43,8 +52,13 @@ function EventCalendar() {
         id: event._id,
       }));
       setEvents(eventsWithId);
+
+      setLoading(false);
+
     } catch (error) {
       console.error("Error fetching events:", error);
+      setLoading(false);
+
     }
   };
 
@@ -466,6 +480,8 @@ function EventCalendar() {
   };
 
   const handleDeleteEvent = (id) => {
+    setLoading(true); // เริ่มต้นโหลดข้อมูล
+
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -482,12 +498,16 @@ function EventCalendar() {
           // Update events state after deletion
           const updatedEvents = events.filter((event) => event._id !== id);
           setEvents(updatedEvents);
-          fetchEventsFromDB();
+          await fetchEventsFromDB();
+
+          setLoading(false);
+
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
             icon: "success",
           });
+          
         }
       });
     } catch (error) {
@@ -614,7 +634,7 @@ function EventCalendar() {
                     whiteSpace: "nowrap",
                     margin: "auto",
                     padding: "2px",
-                    fontSize: "11px"
+                    fontSize: "11px",
                   }}
                 >
                   {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
@@ -689,6 +709,12 @@ function EventCalendar() {
           },
         }}
       />
+
+      {loading && (
+        <div className="loading-overlay">
+          <ThreeDots type="ThreeDots" color="#007bff" height={50} width={50} />
+        </div>
+      )}
     </div>
   );
 }

@@ -120,10 +120,10 @@ const Login = () => {
                     </Button>
                   </li>
                 </ul> */}
-                <span className="signup-link">
+                {/* <span className="signup-link">
                   Don't have an account? Sign up{" "}
                   <Link to={"/register"}>here</Link>
-                </span>
+                </span> */}
               </div>
             </div>
           </div>

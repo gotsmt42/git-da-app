@@ -95,6 +95,8 @@ const DataTableColumns = ({
       name: "File Name",
       cell: (row) => <CustomCell row={row} isSmallScreen={isSmallScreen} />,
       sortable: true,
+      selector: (row) => row.filename, // เพิ่ม selector เพื่อให้สามารถเรียงลำดับได้ตามค่า filename
+
     },
 
     {
