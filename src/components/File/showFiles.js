@@ -136,8 +136,8 @@ const ShowFiles = () => {
 
   // ฟังก์ชันลบข้อมูลทั้งหมด
   const handleDelete = async () => {
+   setLoading(true); // เริ่มต้นโหลดข้อมูล
     try {
-      setLoading(true); // เริ่มต้นโหลดข้อมูล
       setShowDeleteModal(true); // แสดง modal ลบ
       setConfirmExit(true); // ตั้งค่าให้ยืนยันการออกจากหน้า
 
@@ -184,8 +184,8 @@ const ShowFiles = () => {
 
   // ฟังชั่นลบไฟล์แต่ละแถว
   const handleDeleteRow = async (rowId) => {
+   setLoading(true); // เริ่มต้นโหลดข้อมูล
     try {
-      setLoading(true); // เริ่มต้นโหลดข้อมูล
       setShowDeleteModal(true); // แสดง modal ลบ
       setConfirmExit(true); // ตั้งค่าให้ยืนยันการออกจากหน้า
 
