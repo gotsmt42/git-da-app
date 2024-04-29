@@ -648,7 +648,7 @@ function EventCalendar() {
       // default is 'A4'
       format: "a4",
       // default is 'portrait'
-      orientation: "landscape",
+      orientation: "portrait",
     },
     canvas: {
       // default is 'image/jpeg' for better size performance
