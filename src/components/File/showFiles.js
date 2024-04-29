@@ -136,13 +136,13 @@ const ShowFiles = () => {
 
   // ฟังก์ชันลบข้อมูลทั้งหมด
   const handleDelete = async () => {
-   setLoading(true); // เริ่มต้นโหลดข้อมูล
     try {
       setShowDeleteModal(true); // แสดง modal ลบ
       setConfirmExit(true); // ตั้งค่าให้ยืนยันการออกจากหน้า
 
       await SwalDelete().then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true); // เริ่มต้นโหลดข้อมูล
           // หากมีข้อมูลที่เลือกอยู่
           if (selectedRows.length > 0) {
             const promises = selectedRows.map(async (row) => {
@@ -184,13 +184,13 @@ const ShowFiles = () => {
 
   // ฟังชั่นลบไฟล์แต่ละแถว
   const handleDeleteRow = async (rowId) => {
-   setLoading(true); // เริ่มต้นโหลดข้อมูล
     try {
       setShowDeleteModal(true); // แสดง modal ลบ
       setConfirmExit(true); // ตั้งค่าให้ยืนยันการออกจากหน้า
 
       await SwalDelete().then(async (result) => {
         if (result.isConfirmed) {
+          setLoading(true); // เริ่มต้นโหลดข้อมูล
           await FileService.deleteFile(rowId);
           // หลังจากลบไฟล์เสร็จแล้วให้ดึงข้อมูลใหม่
           await fetchData();
