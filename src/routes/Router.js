@@ -27,7 +27,14 @@ const Register = lazy(() => import("../auth/Register.js"));
 
 const PrivateRouteContent = () => {
   const navigate = useNavigate();
-  navigate("/dashboard");
+
+  useEffect(() => {
+    // Navigate to the dashboard route when the component mounts
+    navigate("/dashboard");
+  }, [navigate]);
+
+  // Return null as the component doesn't render anything
+  return null;
 };
 
 const ThemeRoutes = [
@@ -36,13 +43,13 @@ const ThemeRoutes = [
     element: (
       <PrivateRoute>
         <FullLayout />
+        
       </PrivateRoute>
     ),
     children: [
       {
         path: "/",
-        exact: true,
-        element: <PrivateRouteContent />,
+        element: <Navigate to="/dashboard" />,
       },
       {
         path: "/dashboard",

@@ -140,7 +140,7 @@ const ProjectTables = () => {
                   <td>
                     {/* Calculate weeks since creation */}
                     {moment().diff(moment(user.createdAt), "weeks")}
-                  </td>{" "}
+                  </td>
                   <td>
                     {user.salary &&
                     typeof user.salary === "object" &&

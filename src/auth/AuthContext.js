@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -10,35 +9,46 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [previousPath, setPreviousPath] = useState(""); // เริ่มต้น previousPath เป็นค่าว่าง
 
   useEffect(() => {
-    // Check for JWT in local storage or wherever you store the token
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      navigate({ state: { from: location } });
-
       setLoggedIn(true);
+      
+      if (location.pathname === "/") {
+        navigate("/dashboard");
+      } else if (location.pathname === "/login") {
+        if (previousPath) {
+          navigate(previousPath);
+        } else {
+          navigate("/dashboard"); // หากไม่มีเส้นทางก่อนหน้านี้ ให้เข้าไปยัง /dashboard
+        }
+      } else {
+        setPreviousPath(location.pathname);
+        navigate({ state: { from: location } });
+      }
+    } else {
+      setLoggedIn(false);
+      // console.log("Redirecting to ", location.pathname);
     }
-  }, []);
-
-  // console.log("Login: " + isLoggedIn);
+  }, [navigate, isLoggedIn, location.pathname, previousPath]);
 
   const login = (newToken, payload) => {
-    // Store the token in local storage or wherever you prefer
     localStorage.setItem("payload", JSON.stringify(payload));
     localStorage.setItem("token", newToken);
-
     setLoggedIn(true);
   };
 
   const logout = () => {
-    // Remove the token from local storage
     localStorage.removeItem("payload");
     localStorage.removeItem("token");
-
     setLoggedIn(false);
-    navigate('/login')
+    navigate("/login");
   };
+
+  console.log("Login: " + isLoggedIn);
+  console.log("PathName: " + previousPath);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>

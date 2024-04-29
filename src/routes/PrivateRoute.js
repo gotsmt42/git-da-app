@@ -13,10 +13,10 @@ const PrivateRoute = ({ element, ...rest }) => {
 
   return isLoggedIn ? (
     // ถ้าผู้ใช้ยืนยันตัวตนแล้วให้แสดง element ที่ถูกส่งเข้ามา
-    <AuthProvider {...rest} element={element} />
+    <AuthProvider {...rest} element={element}  />
   ) : (
     // ถ้ายังไม่ได้ยืนยันตัวตนให้ redirect ไปยังหน้า login
-    <Navigate to="/login" replace />
+    <Navigate to="/login"  />
   );
 };
 

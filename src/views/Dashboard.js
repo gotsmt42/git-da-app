@@ -58,9 +58,9 @@ const Dashboard = () => {
 
       {/***Sales & Feed***/}
       <Row>
-        <Col sm="6" lg="6" xl="7" xxl="8">
+        {/* <Col sm="6" lg="6" xl="7" xxl="8">
           <Event />
-        </Col>
+        </Col> */}
         <Col sm="6" lg="6" xl="5" xxl="4" style={{ marginTop: "2rem" }}>
           <Feeds />
         </Col>

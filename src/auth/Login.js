@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import API from "../API/axiosInstance";
@@ -12,12 +12,12 @@ import { useAuth } from "./AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const {login} = useAuth()
+  const { login } = useAuth();
 
   const handleValidation = () => {
     let formIsValid = true;
@@ -48,14 +48,11 @@ const Login = () => {
           password,
         });
         const { token, payload } = response.data;
-  
+
         login(token, payload);
 
-        
-  
         // const { from } = location.state || { from: { pathname: "/starter" } }; // ถ้าไม่มี state ให้กลับไปที่หน้าหลัก
-        navigate("/dashboard" );
-
+        navigate("/dashboard");
       } catch (error) {
         console.error("Login failed", error);
         Swal.fire({
@@ -75,7 +72,9 @@ const Login = () => {
             <div className="form-container">
               <div className="left-content">
                 <h2 className="title">Da App</h2>
-                <h4 className="sub-title">ระบบบริหารการจัดการส่วนต่างๆของหลังบ้าน</h4>
+                <h4 className="sub-title">
+                  ระบบบริหารการจัดการส่วนต่างๆของหลังบ้าน
+                </h4>
               </div>
               <div className="right-content">
                 <h3 className="form-title">Login</h3>

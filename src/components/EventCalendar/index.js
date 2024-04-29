@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // for selectable
 import timeGridPlugin from "@fullcalendar/timegrid"; // for dayClick
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
+import adaptivePlugin from "@fullcalendar/adaptive";
+
 import listPlugin from "@fullcalendar/list";
 
 import Swal from "sweetalert2";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import FontAwesomeIcon component
 
-import { faBell } from "@fortawesome/free-solid-svg-icons"; // Import ไอคอนต่างๆ
+import { faBell, faFilePdf } from "@fortawesome/free-solid-svg-icons"; // Import ไอคอนต่างๆ
 
 import EventService from "../../services/EventService";
 import moment from "moment";
 
-
 import { ThreeDots } from "react-loader-spinner";
 
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+import generatePDF, { Resolution, Margin } from "react-to-pdf";
 
 function EventCalendar() {
   const [events, setEvents] = useState([]);
@@ -29,6 +34,7 @@ function EventCalendar() {
 
   const [loading, setLoading] = useState(false); // เพิ่มสถานะการโหลด
 
+  const componentRef = useRef();
 
   useEffect(() => {
     fetchEventsFromDB(); // Fetch events when component mounts
@@ -54,11 +60,9 @@ function EventCalendar() {
       setEvents(eventsWithId);
 
       setLoading(false);
-
     } catch (error) {
       console.error("Error fetching events:", error);
       setLoading(false);
-
     }
   };
 
@@ -380,7 +384,6 @@ function EventCalendar() {
 
         fetchEventsFromDB();
 
-
         setLoading(false); // เริ่มต้นโหลดข้อมูล
 
         Swal.fire({
@@ -485,7 +488,6 @@ function EventCalendar() {
   };
 
   const handleDeleteEvent = (id) => {
-
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -513,7 +515,6 @@ function EventCalendar() {
             text: "Your file has been deleted.",
             icon: "success",
           });
-          
         }
       });
     } catch (error) {
@@ -580,141 +581,254 @@ function EventCalendar() {
     }
   };
 
-  // ฟังก์ชันสำหรับการกำหนดรูปแบบเวลาในรูปแบบ 24 ชั่วโมง
-  const formatTime = (date) => {
-    const hours = date.getHours().toString().padStart(2, "0"); // แสดงชั่วโมงในรูปแบบ 2 ตัวอักษร (00-23)
-    const minutes = date.getMinutes().toString().padStart(2, "0"); // แสดงนาทีในรูปแบบ 2 ตัวอักษร (00-59)
-    return `${hours}:${minutes}`;
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  // });
+
+  const calendarRef = useRef(null);
+
+  // ฟังก์ชันสำหรับสร้าง PDF จาก FullCalendar
+  // const generatePDF = () => {
+  //   const input = document.getElementById("fullCalendar");
+  //   const pdf = new jsPDF("p", "mm", "a4"); // กำหนด PDF ให้มีขนาด A4
+  //   const pageWidth = pdf.internal.pageSize.getWidth(); // ขนาดกว้างของหน้า PDF
+  //   const pageHeight = pdf.internal.pageSize.getHeight(); // ขนาดสูงของหน้า PDF
+  //   const margin = 10; // ขอบเริ่มต้นที่ 10 หน่วย
+  //   let positionY = margin;
+
+  //   html2canvas(input).then((canvas) => {
+  //     const imgWidth = pageWidth - 2 * margin; // ความกว้างของรูปที่ต้องการแสดงใน PDF
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width; // คำนวณความสูงของรูป
+
+  //     let remainingHeight = canvas.height;
+
+  //     while (remainingHeight > 0) {
+  //       const imgData = canvas.toDataURL("image/png");
+  //       const pageData = (remainingHeight / canvas.height) * canvas.width; // คำนวณอัตราส่วนของหน้าที่จะแสดงใน PDF
+
+  //       // รวมรูปภาพที่ใช้เพื่อแสดงในหน้า PDF
+  //       pdf.addImage(
+  //         imgData,
+  //         "PNG",
+  //         margin,
+  //         positionY,
+  //         imgWidth,
+  //         imgHeight,
+  //         null,
+  //         "FAST"
+  //       );
+
+  //       remainingHeight -= pageData * imgHeight; // ลบความสูงของหน้าละกับขอบ
+  //       positionY += imgHeight; // ตำแหน่ง Y ของภาพในหน้า PDF
+
+  //       if (remainingHeight > 0) {
+  //         pdf.addPage();
+  //         // ตรวจสอบว่ามีพื้นที่สำหรับรูปภาพในหน้า PDF ถ้าไม่มีให้เพิ่มหน้าใหม่
+  //         if (remainingHeight < imgHeight) {
+  //           remainingHeight = 0;
+  //         }
+  //       }
+  //     }
+
+  //     pdf.save("calendar.pdf");
+  //   });
+  // };
+
+  const options = {
+    // default is `save`
+    method: "open",
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    resolution: Resolution.HIGH,
+    page: {
+      // margin is in MM, default is Margin.NONE = 0
+      margin: Margin.SMALL,
+      // default is 'A4'
+      format: "a4",
+      // default is 'portrait'
+      orientation: "landscape",
+    },
+    canvas: {
+      // default is 'image/jpeg' for better size performance
+      mimeType: "image/png",
+      qualityRatio: 1,
+    },
+    // Customize any value passed to the jsPDF instance and html2canvas
+    // function. You probably will not need this and things can break,
+    // so use with caution.
+    overrides: {
+      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+      pdf: {
+        compress: true,
+      },
+      // see https://html2canvas.hertzen.com/configuration for more options
+      canvas: {
+        useCORS: true,
+      },
+    },
   };
+
+  const generatePdf = async () => {
+    setLoading(true);
+
+    try {
+      const getTargetElement = () => document.getElementById("content-id");
+
+      await generatePDF(getTargetElement, options);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
-      <div className="mb-5 d-flex flex-column">
-        <button className="btn btn-success" onClick={handleLineNotify}>
-          <FontAwesomeIcon icon={faBell} /> ส่งแจ้งเตือนอัพเดตผ่าน LINE
-        </button>
+      <div className="mb-3 d-flex flex-column">
+        <div className="row">
+          <div className="col-md-8">
+            <button className="btn btn-danger " onClick={generatePdf}>
+              <FontAwesomeIcon icon={faFilePdf} /> Generate PDF
+            </button>
+          </div>
+          <div className="col-md-8 mt-2">
+            <button
+              className="btn btn-success"
+              onClick={handleLineNotify}
+            >
+              <FontAwesomeIcon icon={faBell} /> ส่งแจ้งเตือนอัพเดตผ่าน LINE
+            </button>
+          </div>
+        </div>
       </div>
-      <FullCalendar
-        timeZone="local"
-        plugins={[
-          dayGridPlugin,
-          interactionPlugin,
-          timeGridPlugin,
-          momentTimezonePlugin,
-          listPlugin,
-        ]}
-        initialView="dayGridMonth"
-        selectable={true}
-        editable={true}
-        events={events}
-        dateClick={handleAddEvent}
-        eventDrop={handleEventDrop}
-        eventResize={handleEventResize}
-        allDaySlot={true}
-        nowIndicator={true}
-        selectMirror={true}
-        weekends={true}
-        // slotLabelFormat={{
-        //   hour: "2-digit",
-        //   minute: "2-digit",
-        //   omitZeroMinute: false,
-        //   hour12: false,
-        // }}
+      <div id="content-id">
+        <FullCalendar
+          ref={calendarRef}
+          // schedulerLicenseKey="<YOUR-LICENSE-KEY-GOES-HERE>" //FullCalendar Premium
+          contentHeight="auto" // กำหนดให้ความสูงของตารางปรับเป็นอัตโนมัติ
+          timeZone="local"
+          plugins={[
+            dayGridPlugin,
+            interactionPlugin,
+            timeGridPlugin,
+            momentTimezonePlugin,
+            listPlugin,
+          ]}
+          initialView="dayGridMonth"
+          selectable={true}
+          editable={true}
+          events={events}
+          dateClick={handleAddEvent}
+          eventDrop={handleEventDrop}
+          eventResize={handleEventResize}
+          allDaySlot={true}
+          nowIndicator={true}
+          selectMirror={true}
+          weekends={true}
+          // slotLabelFormat={{
+          //   hour: "2-digit",
+          //   minute: "2-digit",
+          //   omitZeroMinute: false,
+          //   hour12: false,
+          // }}
 
-        eventContent={(eventInfo) => (
-          <div>
-            {eventInfo.event.allDay === false ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span
+          eventContent={(eventInfo) => (
+            <div>
+              {eventInfo.event.allDay === false ? (
+                <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      margin: "auto",
+                      padding: "2px",
+                      fontSize: "11px",
+                    }}
+                  >
+                    {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
+                    {moment(eventInfo.event.endStr).format("HH:mm")}
+                  </span>
+                </div>
+              ) : null}
+              <div
+                style={{
+                  backgroundColor: eventInfo.event.backgroundColor,
+
+                  color: eventInfo.event.textColor,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  border: "3px solid",
+                  borderRadius: "20px",
+                }}
+              >
+                <span
+                  style={{
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
                     margin: "auto",
-                    padding: "2px",
-                    fontSize: "11px",
+                    padding: "5px",
+                    fontSize: eventInfo.event.extendedProps.fontSize,
                   }}
                 >
-                  {moment(eventInfo.event.startStr).format("HH:mm")} -{" "}
-                  {moment(eventInfo.event.endStr).format("HH:mm")}
+                  {eventInfo.event.allDay === false ? (
+                    <span
+                      style={{
+                        whiteSpace: "nowrap",
+                        fontSize: eventInfo.event.extendedProps.fontSize,
+                      }}
+                    >
+                      {eventInfo.event.title}
+                    </span>
+                  ) : (
+                    <span
+                      style={{
+                        whiteSpace: "nowrap",
+                        fontSize: eventInfo.event.extendedProps.fontSize,
+                      }}
+                    >
+                      {eventInfo.event.title}
+                    </span>
+                  )}
                 </span>
               </div>
-            ) : null}
-            <div
-              style={{
-                backgroundColor: eventInfo.event.backgroundColor,
-
-                color: eventInfo.event.textColor,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                border: "3px solid",
-                borderRadius: "20px",
-              }}
-            >
-              <span
-                style={{
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  margin: "auto",
-                  padding: "5px",
-                  fontSize: eventInfo.event.extendedProps.fontSize,
-                }}
-              >
-                {eventInfo.event.allDay === false ? (
-                  <span
-                    style={{
-                      whiteSpace: "nowrap",
-                      fontSize: eventInfo.event.extendedProps.fontSize,
-                    }}
-                  >
-                    {eventInfo.event.title}
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      whiteSpace: "nowrap",
-                      fontSize: eventInfo.event.extendedProps.fontSize,
-                    }}
-                  >
-                    {eventInfo.event.title}
-                  </span>
-                )}
-              </span>
             </div>
-          </div>
-        )}
-        eventClick={handleEditEvent}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-        }}
-        dayMaxEventRows={true} // ใช้งานการแสดงเหตุการณ์ที่ยาวนานใน dayGridMonth
-        views={{
-          listWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
-          },
-          dayGridMonth: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
-          },
-          timeGridWeek: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
-          },
-          timeGridDay: {
-            dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
-          },
-        }}
-      />
+          )}
+          eventClick={handleEditEvent}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          }}
+          dayMaxEventRows={true} // ใช้งานการแสดงเหตุการณ์ที่ยาวนานใน dayGridMonth
+          views={{
+            listWeek: {
+              dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
+            },
+            dayGridMonth: {
+              dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
+            },
+            timeGridWeek: {
+              dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
+            },
+            timeGridDay: {
+              dayMaxEventRows: window.innerWidth >= 576 ? 5 : 3,
+            },
+          }}
+        />
+      </div>
 
       {loading && (
         <div className="loading-overlay">

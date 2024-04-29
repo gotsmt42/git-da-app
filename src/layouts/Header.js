@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/authService";
 import { useAuth } from "../auth/AuthContext";
 
@@ -24,6 +24,9 @@ import Swal from "sweetalert2";
 import API from "../API/axiosInstance";
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
   const { logout } = useAuth();
   const [user, setUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +78,7 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">{/* <Logo /> */}</div>
 
         <NavbarBrand tag={Link} to="/dashboard">
-          <div class="gradiant-bg">
+          <div className="gradiant-bg">
             <h2>Logo App</h2>
           </div>
         </NavbarBrand>
